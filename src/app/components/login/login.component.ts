@@ -22,11 +22,9 @@ export class LoginComponent implements OnInit {
 
   public loginOpened() {
     this.closedLogin = true;
-    console.log('login opened');
   }
 
   public closeLogin() {
     this.closedLogin = false;
-    console.log('login closed');
   }
 }

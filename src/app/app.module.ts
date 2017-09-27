@@ -25,6 +25,12 @@ import {routing} from './app.route';
 import { MenuComponent } from './components/menu/menu.component';
 import { LoginComponent } from './components/login/login.component';
 import { SplashPageComponent } from './pages/splash/splash.page.component';
+import {AngularFireModule} from 'angularfire2';
+import { environment } from '../environments/environment';
+import {AngularFireDatabaseModule} from 'angularfire2/database';
+import {AngularFireAuthModule} from 'angularfire2/auth';
+import {FirebaseService} from './services/firebase.service';
+import { BlogComponent } from './components/blog/blog.component';
 
 @NgModule({
   declarations: [
@@ -34,13 +40,17 @@ import { SplashPageComponent } from './pages/splash/splash.page.component';
     Four04Component,
     MenuComponent,
     LoginComponent,
-    SplashPageComponent
+    SplashPageComponent,
+    BlogComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
     routing,
+    AngularFireModule.initializeApp(environment.firebase, 'lgfbapp'),  // imports firebase/app needed for everything
+    AngularFireDatabaseModule, // imports firebase/database, only needed for database features
+    AngularFireAuthModule, // imports firebase/auth, only needed for auth features
     MdButtonModule, MdMenuModule, MdToolbarModule, MdInputModule, MdSidenavModule, MdIconModule, MdTabsModule,
     MdChipsModule, MdTooltipModule, MdCardModule, MdCheckboxModule, MdDialogModule,
     MdOptionModule, MdLineModule, MdListModule, MdProgressBarModule, MdProgressSpinnerModule, MdAutocompleteModule,
@@ -48,7 +58,7 @@ import { SplashPageComponent } from './pages/splash/splash.page.component';
     MdSlideToggleModule, MdSnackBarModule, MdExpansionModule, MdStepperModule, MdPaginatorModule, MdTabsModule, MdSortModule,
     MdDatepickerModule
   ],
-  providers: [],
+  providers: [FirebaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

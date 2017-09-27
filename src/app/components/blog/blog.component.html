@@ -1,0 +1,19 @@
+<md-card *ngFor="let blog of blogList" class="blogPost">
+  <md-card-title>
+    {{blog.title}}
+  </md-card-title>
+  <md-card-subtitle>
+    {{blog.subtitle}}
+  </md-card-subtitle>
+  <div class="videoContainer" md-card-image *ngIf="blog.hasVideo">
+    <video poster="{{blog.image}}" preload="auto" muted loop autoplay class="blogVideo">
+      <source src="{{blog.image}}" type="video/{{blog.videoType}}">
+    </video>
+  </div>
+  <md-card-content>
+    {{blog.content}}
+  </md-card-content>
+  <md-card-footer>
+    {{blog.footer}}
+  </md-card-footer>
+</md-card>

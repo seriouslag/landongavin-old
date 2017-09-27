@@ -1,0 +1,12 @@
+.blogPost {
+}
+
+.videoContainer {
+  width: 100%;
+  height: 300px;
+}
+
+.blogVideo {
+  max-height: 100%;
+  object-fit: cover;
+}
