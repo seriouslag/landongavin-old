@@ -13,20 +13,8 @@ html, body {
 
 }
 
-:host /deep/ {
-  text-decoration: none;
-}
-
-
 .small_button {
   min-width: 1%;
-}
-
-:host /deep/ a {
-  text-decoration: none;
-}
-:host /deep/ {
-  text-decoration: none;
 }
 
 a {

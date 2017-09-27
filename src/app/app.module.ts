@@ -24,6 +24,7 @@ import { Four04Component } from './pages/four04/four04.component';
 import {routing} from './app.route';
 import { MenuComponent } from './components/menu/menu.component';
 import { LoginComponent } from './components/login/login.component';
+import { SplashPageComponent } from './pages/splash/splash.page.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { LoginComponent } from './components/login/login.component';
     AboutPageComponent,
     Four04Component,
     MenuComponent,
-    LoginComponent
+    LoginComponent,
+    SplashPageComponent
   ],
   imports: [
     BrowserModule,

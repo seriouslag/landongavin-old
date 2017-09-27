@@ -1,5 +1,5 @@
-<md-accordion id="login_component">
-  <md-expansion-panel>
+<md-accordion #login_component>
+  <md-expansion-panel (opened)="loginOpened()" [expanded]="closedLogin">
     <md-expansion-panel-header>
       <md-panel-title>
         Login
@@ -7,16 +7,18 @@
     </md-expansion-panel-header>
 
     <md-form-field>
-      <input mdInput placeholder="Username">
+      <input mdInput placeholder="Username" type="text">
     </md-form-field>
 
     <md-form-field>
-      <input mdInput placeholder="Password">
+      <input mdInput placeholder="Password" type="password">
     </md-form-field>
 
     <md-action-row>
-      <button md-button>Cancel</button>
-      <button md-button>Login</button>
+      <div fxLayout="row" fxFlexFill>
+        <button md-button (click)="closeLogin()">Cancel</button>
+        <button md-button (click)="openSnackBar()">Login</button>
+      </div>
     </md-action-row>
   </md-expansion-panel>
 </md-accordion>
