@@ -1,3 +1,13 @@
-:host {
+:host(app-login) {
   max-width: 250px;
+  z-index: 999;
+}
+
+.required {
+  color: red;
+  font-size: .7em;
+}
+
+.errorHints {
+  color: red;
 }

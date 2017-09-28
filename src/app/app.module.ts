@@ -32,6 +32,9 @@ import {AngularFireAuthModule} from 'angularfire2/auth';
 import {FirebaseService} from './services/firebase.service';
 import { BlogComponent } from './components/blog/blog.component';
 
+import { Angulartics2Module, Angulartics2GoogleTagManager } from 'angulartics2';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,10 +50,13 @@ import { BlogComponent } from './components/blog/blog.component';
     BrowserModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
+    FormsModule,
+    ReactiveFormsModule,
     routing,
     AngularFireModule.initializeApp(environment.firebase, 'lgfbapp'),  // imports firebase/app needed for everything
     AngularFireDatabaseModule, // imports firebase/database, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features
+    Angulartics2Module.forRoot([ Angulartics2GoogleTagManager ]),
     MdButtonModule, MdMenuModule, MdToolbarModule, MdInputModule, MdSidenavModule, MdIconModule, MdTabsModule,
     MdChipsModule, MdTooltipModule, MdCardModule, MdCheckboxModule, MdDialogModule,
     MdOptionModule, MdLineModule, MdListModule, MdProgressBarModule, MdProgressSpinnerModule, MdAutocompleteModule,
@@ -58,6 +64,7 @@ import { BlogComponent } from './components/blog/blog.component';
     MdSlideToggleModule, MdSnackBarModule, MdExpansionModule, MdStepperModule, MdPaginatorModule, MdTabsModule, MdSortModule,
     MdDatepickerModule
   ],
+  exports: [FormsModule, ReactiveFormsModule],
   providers: [FirebaseService],
   bootstrap: [AppComponent]
 })

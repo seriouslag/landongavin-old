@@ -5,19 +5,50 @@
         Login
       </md-panel-title>
     </md-expansion-panel-header>
+    <form [formGroup]="loginForm" novalidate (submit)="loginWithEmail()">
+      <md-form-field>
+        <input mdInput placeholder="Email" type="email" formControlName="email">
+        <md-hint class="errorHints"
+                 *ngIf="loginForm.controls['email'].touched && loginForm.controls['email'].hasError('email') && !loginForm.controls['email'].hasError('required')">
+          Email is invalid.
+        </md-hint>
+        <md-hint class="errorHints"
+                 *ngIf="loginForm.controls['email'].touched  && loginForm.controls['email'].hasError('required')">An
+          email is required to login.
+        </md-hint>
+      </md-form-field>
 
-    <md-form-field>
-      <input mdInput placeholder="Username" type="text">
-    </md-form-field>
+      <md-form-field>
+        <input mdInput placeholder="Password" type="password" formControlName="password">
+        <md-hint class="errorHints"
+                 *ngIf="loginForm.controls['password'].touched  && loginForm.controls['password'].hasError('required')">
+          Your password is required to login.
+        </md-hint>
+      </md-form-field>
+      <div fxLayout="row" fxLayoutAlign="space-around center">
+        <button md-button (click)="loginWithEmail()" [disabled]="loginForm.invalid">
+          Login
+        </button>
+        <button md-button md-tooltip="Login with Google" [mdTooltipShowDelay]="500" (click)="loginWithGoogle()">
+            <span fxLayout="row" fxLayoutAlign="center center">
+              <span>Sign In with</span>
+              <span fxFlex="5px"></span>
+              <span class="google icon-wrapper">
+                <i class="mdi mdi-18px mdi-google"></i>
+              </span>
+            </span>
+        </button>
 
-    <md-form-field>
-      <input mdInput placeholder="Password" type="password">
-    </md-form-field>
+      </div>
+    </form>
 
     <md-action-row>
       <div fxLayout="row" fxFlexFill>
-        <button md-button (click)="closeLogin()">Cancel</button>
-        <button md-button (click)="openSnackBar()">Login</button>
+        <button md-button (click)="closeLogin()" md-tooltip="Cancel Login" [mdTooltipShowDelay]="500">Cancel</button>
+
+        <button class="create_button" md-button md-tooltip="Create an account" [mdTooltipShowDelay]="500">
+          Create
+        </button>
       </div>
     </md-action-row>
   </md-expansion-panel>
