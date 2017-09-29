@@ -3,7 +3,8 @@
     <md-expansion-panel-header>
       <md-panel-title>
         <div *ngIf="user" fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="10px" class="account_info">
-          <img src="{{user.photoURL}}" *ngIf="user.photoURL !== ''"><div>{{user.displayName}}</div>
+          <img src="{{user.photoURL}}" *ngIf="user.photoURL"><div *ngIf="user.displayName">{{user.displayName}}</div>
+          <div *ngIf="!user.displayName">{{user.email}}</div>
         </div>
       </md-panel-title>
     </md-expansion-panel-header>
