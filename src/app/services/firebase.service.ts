@@ -16,6 +16,7 @@ export class FirebaseService {
 
   constructor(private db: AngularFireDatabase, private auth: AngularFireAuth, private snackBar: MdSnackBar) {
     this.user = auth.authState;
+    auth.auth.setPersistence('local');
   }
 
   public getBlogPostsFromFB(): FirebaseListObservable<Card[]> {

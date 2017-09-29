@@ -14,11 +14,12 @@ export class BlogComponent implements OnInit, OnDestroy {
   private blogSubscription: Subscription;
   blogList: Blog[];
   private videoList: string[] = [
-    'ogg', 'mp4'
+    'ogv', 'ogm', 'ogg', 'mp4', 'webm', 'gifv'
   ];
 
-  isVideo: Boolean = true;
-  videoType = 'mp4';
+  private imgList: string[] = [
+    'png', 'bmp', 'jpeg', 'jpg', 'gif'
+  ];
 
   constructor(private firebaseService: FirebaseService) { }
 
@@ -34,6 +35,7 @@ export class BlogComponent implements OnInit, OnDestroy {
 
   private parseCardArrayToBlogArray(cards: Card[]): Blog[] {
     const blogList: Blog[] = [];
+
     for (const card of cards) {
       const blog: Blog = <Blog>{
         id: card.id,
@@ -45,10 +47,29 @@ export class BlogComponent implements OnInit, OnDestroy {
         hasVideo: false,
         videoType: ''
       };
-      for (const type of this.videoList) {
-        if (card.image.substr(card.image.length - 3).toLocaleLowerCase() === type) {
-          blog.hasVideo = true;
-          blog.videoType = type;
+      if(blog.image.length > 0) {
+        let extension: string = card.image.substr(card.image.length - 3).toLocaleLowerCase();
+        let allowed: boolean = false;
+        for (const type of this.videoList) {
+          if (extension === type) {
+            blog.hasVideo = true;
+            if (type === 'ogv' || type === 'ogm') {
+              blog.videoType = 'ogg'
+            } else {
+              blog.videoType = type;
+            }
+            allowed = true;
+          }
+        }
+        if (allowed === false) {
+          for (const type of this.imgList) {
+            if (extension === type) {
+              allowed = true;
+            }
+          }
+        }
+        if(allowed === false) {
+          blog.image = '';
         }
       }
 

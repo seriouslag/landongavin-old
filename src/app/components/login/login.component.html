@@ -29,7 +29,7 @@
         <button md-button (click)="loginWithEmail()" [disabled]="loginForm.invalid">
           Login
         </button>
-        <button md-button md-tooltip="Login with Google" [mdTooltipShowDelay]="500" (click)="loginWithGoogle()">
+        <button md-button md-tooltip="Login with Google" type="button" [mdTooltipShowDelay]="500" (click)="loginWithGoogle()">
             <span fxLayout="row" fxLayoutAlign="center center">
               <span>Sign In with</span>
               <span fxFlex="5px"></span>

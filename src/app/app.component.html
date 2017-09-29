@@ -3,7 +3,8 @@
   <div class="header" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-around start">
     <app-menu></app-menu>
     <div fxFlex></div>
-    <app-login></app-login>
+    <app-login *ngIf="user === null || user === {}"></app-login>
+    <app-account *ngIf="user !== null && user !== {}"></app-account>
   </div>
 
   <div class="content_wrapper">

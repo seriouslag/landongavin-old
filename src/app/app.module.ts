@@ -34,6 +34,7 @@ import { BlogComponent } from './components/blog/blog.component';
 
 import { Angulartics2Module, Angulartics2GoogleTagManager } from 'angulartics2';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { AccountComponent } from './components/account/account.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     MenuComponent,
     LoginComponent,
     SplashPageComponent,
-    BlogComponent
+    BlogComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,
