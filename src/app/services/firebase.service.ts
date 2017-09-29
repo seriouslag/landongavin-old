@@ -53,4 +53,25 @@ export class FirebaseService {
     this.auth.auth.signOut();
   }
 
+  public createUserFromEmail(email: string, password: string, name?: string): Promise<string> {
+    return new Promise((resolve) => {
+      this.auth.auth.createUserWithEmailAndPassword(email, password).then((response) => {
+      this.db.object('users/' + response.uid).set({email: email, name: name, created: Date.now()});
+      resolve('ok');
+    }).catch((error: any) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      this.snackBar.open(errorMessage, 'OK', {duration: 2000});
+      if (errorCode === 'auth/weak-password') {
+      } else if (errorCode === 'auth/invalid-email') {
+      } else if (errorCode === 'auth/email-already-in-use') {
+      } else if (errorCode === 'auth/operation-not-allowed') {
+      } else {
+        console.log('An unknown error occurred', error);
+      }
+      resolve(errorCode);
+    });
+  });
+  }
+
 }
