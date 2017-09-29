@@ -25,12 +25,34 @@ export class BlogComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.blogSubscription = this.firebaseService.getBlogPostsFromFB().subscribe(blogList => {
-      this.blogList = this.parseCardArrayToBlogArray(blogList);
+      this.blogList = this.sortBlogArrayByIdDesc(this.parseCardArrayToBlogArray(blogList));
     });
   }
 
   ngOnDestroy() {
     this.blogSubscription.unsubscribe();
+  }
+
+  private sortBlogArrayByIdAsc(blogs: Blog[]): Blog[] {
+    return blogs.sort((a, b) => {
+      if (a.id > b.id) {
+        return 1;
+      }
+      if (a.id < b.id) {
+        return -1;
+      }
+    });
+  }
+
+  private sortBlogArrayByIdDesc(blogs: Blog[]): Blog[] {
+    return blogs.sort((a, b) => {
+      if (a.id < b.id) {
+        return 1;
+      }
+      if (a.id > b.id) {
+        return -1;
+      }
+    });
   }
 
   private parseCardArrayToBlogArray(cards: Card[]): Blog[] {
@@ -47,14 +69,14 @@ export class BlogComponent implements OnInit, OnDestroy {
         hasVideo: false,
         videoType: ''
       };
-      if(blog.image.length > 0) {
-        let extension: string = card.image.substr(card.image.length - 3).toLocaleLowerCase();
-        let allowed: boolean = false;
+      if (blog.image.length > 0) {
+        const extension: string = card.image.substr(card.image.length - 3).toLocaleLowerCase();
+        let allowed = false;
         for (const type of this.videoList) {
           if (extension === type) {
             blog.hasVideo = true;
             if (type === 'ogv' || type === 'ogm') {
-              blog.videoType = 'ogg'
+              blog.videoType = 'ogg';
             } else {
               blog.videoType = type;
             }
@@ -68,7 +90,7 @@ export class BlogComponent implements OnInit, OnDestroy {
             }
           }
         }
-        if(allowed === false) {
+        if (allowed === false) {
           blog.image = '';
         }
       }
