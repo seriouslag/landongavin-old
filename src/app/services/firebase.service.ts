@@ -57,7 +57,11 @@ export class FirebaseService {
   }
 
   public logout(): void {
-    this.auth.auth.signOut();
+    this.auth.auth.signOut().then(() => {
+      this.snackBar.open('Successfully signed out.', 'OK', {duration: 1750});
+    }, () => {
+      this.snackBar.open('Something went wrong :(', 'OK', {duration: 1750});
+    });
   }
 
   public createUserFromEmail(email: string, password: string, name?: string): Promise<string> {

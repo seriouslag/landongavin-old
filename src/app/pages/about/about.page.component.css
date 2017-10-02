@@ -9,3 +9,11 @@ a {
 md-card-actions {
   margin-bottom: -16px;
 }
+
+md-card {
+  max-width: 650px;
+}
+
+p {
+  max-width: 420px;
+}
