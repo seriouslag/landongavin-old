@@ -8,6 +8,9 @@
         </div>
       </md-panel-title>
     </md-expansion-panel-header>
-    <button md-button (click)="logout()">Logout</button>
+    <div fxLayout="column" fxLayoutAlign="start start">
+      <button md-button *ngIf="lgUser?.vanity" routerLink="/about/{{lgUser?.vanity}}">Profile</button>
+      <button md-button (click)="logout()">Logout</button>
+    </div>
   </md-expansion-panel>
 </md-accordion>

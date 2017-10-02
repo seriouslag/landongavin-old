@@ -1,28 +1,34 @@
-<div fxFlex fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
+<div fxFlex fxLayout="column" fxLayoutGap="100px" fxLayoutAlign="center center">
+
   <md-card>
+    <div *ngIf="aboutUser && waiting === false && failed === false">
     <md-card-header>
-      <div md-card-avatar class="profile_image"></div>
-      <md-card-title>Landon Gavin</md-card-title>
-      <md-card-subtitle>Web Developer @ nullspace</md-card-subtitle>
+      <img md-card-avatar class="profile_image" src="{{aboutUserPic}}" *ngIf="noImg === false">
+      <md-card-title>{{aboutUser.fname}} {{aboutUser.lname}}</md-card-title>
+      <md-card-subtitle>{{aboutUser.job}} <span *ngIf="aboutUser.company">@</span> {{aboutUser.company}}</md-card-subtitle>
     </md-card-header>
     <md-card-content>
       <div fxLayout="row">
-        <p>
-          Hey, it's Landon!
+        <p *ngIf="aboutUser.bio">
+          {{aboutUser.bio}}
         </p>
         <div fxFlex></div>
-        <a href="https://docs.google.com/document/d/1rrXxb49hCf2vCCCFtpHfSjXWcvKFzSxUsv011neIeZ8"><button md-raised-button>Resume</button></a>
+        <a *ngIf="aboutUser.resumeLink" href="{{aboutUser.resumeLink}}"><button md-raised-button>Résumé</button></a>
       </div>
 
     </md-card-content>
     <md-card-actions>
-      <a href="https://www.instagram.com/happily_null/"><button md-icon-button><i class="mdi mdi-24px mdi-instagram icon"></i></button></a>
-      <a href="https://www.facebook.com/landon.gavin"><button md-icon-button><i class="mdi mdi-24px mdi-facebook-box icon"></i></button></a>
-      <a href="https://www.youtube.com/LandonGavin"> <button md-icon-button><i class="mdi mdi-24px mdi-youtube-play icon"></i></button></a>
-      <a href="https://twitter.com/seriouslag"><button md-icon-button><i class="mdi mdi-24px mdi-twitter-box icon"></i></button></a>
-      <a href="https://www.twitch.tv/someseriouslag"><button md-icon-button><i class="mdi mdi-24px mdi-twitch icon"></i></button></a>
-      <a href="https://www.linkedin.com/in/landon-gavin-31849433"> <button md-icon-button><i class="mdi mdi-24px mdi-linkedin-box icon"></i></button></a>
+      <a *ngIf="aboutUser.instagram" href="https://www.instagram.com/{{aboutUser.instagram}}"><button md-icon-button><i class="mdi mdi-24px mdi-instagram icon"></i></button></a>
+      <a *ngIf="aboutUser.facebook" href="https://www.facebook.com/{{aboutUser.facebook}}"><button md-icon-button><i class="mdi mdi-24px mdi-facebook-box icon"></i></button></a>
+      <a *ngIf="aboutUser.youtube" href="https://www.youtube.com/{{aboutUser.youtube}}"> <button md-icon-button><i class="mdi mdi-24px mdi-youtube-play icon"></i></button></a>
+      <a *ngIf="aboutUser.twitter" href="https://twitter.com/{{aboutUser.twitter}}"><button md-icon-button><i class="mdi mdi-24px mdi-twitter-box icon"></i></button></a>
+      <a *ngIf="aboutUser.twitch" href="https://www.twitch.tv/{{aboutUser.twitch}}"><button md-icon-button><i class="mdi mdi-24px mdi-twitch icon"></i></button></a>
+      <a *ngIf="aboutUser.linkedin" href="https://www.linkedin.com/in/{{aboutUser.linkedin}}"> <button md-icon-button><i class="mdi mdi-24px mdi-linkedin-box icon"></i></button></a>
     </md-card-actions>
+    </div>
+    <md-spinner *ngIf="aboutUser == null && waiting === true && failed === false"></md-spinner>
+    <md-card-content *ngIf="aboutUser == null && waiting === false && failed === true">
+      User was not found.
+    </md-card-content>
   </md-card>
-
 </div>

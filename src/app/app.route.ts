@@ -7,11 +7,10 @@ import {SplashPageComponent} from './pages/splash/splash.page.component';
 export const appRoutes: Routes = [
   {path: 'home', component: HomePageComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  {path: 'about', component: AboutPageComponent},
+  {path: 'about', redirectTo: 'about/LandonGavin', pathMatch: 'full'},
   {path: 'splash', component: SplashPageComponent},
+  {path: 'about/:vanity', component: AboutPageComponent},
   {path: '**', component: Four04Component}
 ];
 
 export const routing = RouterModule.forRoot(appRoutes);
-
-
