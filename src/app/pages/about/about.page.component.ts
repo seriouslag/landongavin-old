@@ -53,12 +53,16 @@ export class AboutPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
-    this.vanitySubscription.unsubscribe();
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+    if (this.vanitySubscription) {
+      this.vanitySubscription.unsubscribe();
+    }
   }
 
   private getUserByUID(uid: string) {
-    this.firebaseService.getUserByUID(uid).subscribe(aboutUser => {
+    this.firebaseService.getLGUserByUID(uid).subscribe(aboutUser => {
       this.aboutUser = aboutUser as User;
     });
   }

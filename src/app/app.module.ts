@@ -35,18 +35,23 @@ import { BlogComponent } from './components/blog/blog.component';
 import { Angulartics2Module, Angulartics2GoogleTagManager } from 'angulartics2';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { AccountComponent } from './components/account/account.component';
+import { MergeComponent } from './components/dialogs/merge/merge.component';
+import {DialogService} from './services/dialog.service';
+import {AccountPageComponent} from './pages/account/account.page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomePageComponent,
     AboutPageComponent,
+    AccountPageComponent,
     Four04Component,
     MenuComponent,
     LoginComponent,
     SplashPageComponent,
     BlogComponent,
-    AccountComponent
+    AccountComponent,
+    MergeComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +72,8 @@ import { AccountComponent } from './components/account/account.component';
     MdDatepickerModule
   ],
   exports: [FormsModule, ReactiveFormsModule],
-  providers: [FirebaseService],
+  providers: [FirebaseService, DialogService],
+  entryComponents: [MergeComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

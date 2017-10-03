@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {MdSnackBar} from '@angular/material/snack-bar';
 import {FirebaseService} from '../../services/firebase.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-
+import {DialogService} from '../../services/dialog.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -13,6 +13,8 @@ export class LoginComponent implements OnInit {
   create = false;
   submitted = false;
   action = false;
+
+
 
   public closedLogin: Boolean = false;
 
@@ -38,7 +40,8 @@ export class LoginComponent implements OnInit {
     matchingPassword: this.matchingPassword,
   });
 
-  constructor(public snackBar: MdSnackBar, private firebaseService: FirebaseService) { }
+  constructor(public snackBar: MdSnackBar, private firebaseService: FirebaseService,
+              private dialogService: DialogService) { }
 
   ngOnInit(): void {
   }
@@ -66,25 +69,13 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     this.firebaseService.createUserFromEmail(
       this.matchingEmail.controls['email'].value.toLowerCase(), this.matchingPassword.controls['password'].value,
-      (this.accountForm.controls['firstname'].value + ' ' + this.accountForm.controls['lastname'].value)).then((response) => {
-      if (response === 'ok') {
+      this.accountForm.controls['firstname'].value, this.accountForm.controls['lastname'].value).then((user) => {
+      if (user) {
         this.snackBar.open('Created account: ' + this.matchingEmail.controls['email'].value.toLowerCase());
         this.toLogin();
         this.action = true;
-        // this.loginDialog.close('force');
       } else {
         this.submitted = false;
-        if (response === 'auth/weak-password') {
-          this.snackBar.open('Password is too weak', 'OK', {duration: 2000});
-        } else if (response === 'auth/invalid-email') {
-          this.snackBar.open('Email is invalid', 'OK', {duration: 2000});
-        } else if (response === 'auth/email-already-in-use') {
-          this.snackBar.open('Email is in use, please try another login', 'OK', {duration: 2000});
-        } else if (response === 'auth/operation-not-allowed') {
-          this.snackBar.open('This is not allowed at this time', 'OK', {duration: 2000});
-        } else {
-          this.snackBar.open('Cannot process, unknown error', 'OK', {duration: 2000});
-        }
       }
     });
   }

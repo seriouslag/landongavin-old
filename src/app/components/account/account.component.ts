@@ -23,21 +23,20 @@ export class AccountComponent implements OnInit, OnDestroy {
       this.user = user;
 
       if (this.user != null) {
-        this.lgUserSubscription = this.firebaseService.getUserByUID(user.uid).subscribe(lgUser => {
+        this.lgUserSubscription = this.firebaseService.getLGUserByUID(user.uid).take(1).subscribe(lgUser => {
           this.lgUser = lgUser;
-          console.log(this.lgUser);
         });
       }
     });
-
   }
 
   ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 
   public logout(): void {
     this.firebaseService.logout();
   }
-
 }

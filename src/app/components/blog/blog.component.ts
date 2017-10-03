@@ -30,7 +30,9 @@ export class BlogComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.blogSubscription.unsubscribe();
+    if (this.blogSubscription) {
+      this.blogSubscription.unsubscribe();
+    }
   }
 
   private sortBlogArrayByIdAsc(blogs: Blog[]): Blog[] {
@@ -100,7 +102,5 @@ export class BlogComponent implements OnInit, OnDestroy {
     }
     return blogList;
   }
-
-
 
 }

@@ -1,0 +1,7 @@
+md-card {
+  max-width: 600px;
+}
+
+md-card-actions {
+  margin-bottom: -16px;
+}

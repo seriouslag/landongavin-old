@@ -10,6 +10,7 @@
     </md-expansion-panel-header>
     <div fxLayout="column" fxLayoutAlign="start start">
       <button md-button *ngIf="lgUser?.vanity" routerLink="/about/{{lgUser?.vanity}}">Profile</button>
+      <button md-button *ngIf="lgUser" routerLink="/account">Settings</button>
       <button md-button (click)="logout()">Logout</button>
     </div>
   </md-expansion-panel>

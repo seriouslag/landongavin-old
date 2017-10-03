@@ -7,9 +7,11 @@ import {Observable} from 'rxjs/Observable';
 
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
-import {MdSnackBar} from '@angular/material';
+import {MdSnackBar, MdDialogRef} from '@angular/material';
 import {User} from '../interfaces/user';
 import {FirebaseApp} from 'angularfire2';
+import {DialogService} from './dialog.service';
+import {MergeComponent} from '../components/dialogs/merge/merge.component';
 
 
 @Injectable()
@@ -19,7 +21,10 @@ export class FirebaseService {
   public storage: any;
   public storageRef: any;
 
-  constructor(@Inject(FirebaseApp) firebaseApp: any, private db: AngularFireDatabase, private auth: AngularFireAuth, private snackBar: MdSnackBar) {
+  mergeDialog: MdDialogRef<MergeComponent>;
+
+  constructor(@Inject(FirebaseApp) firebaseApp: any, private db: AngularFireDatabase,
+              private auth: AngularFireAuth, private snackBar: MdSnackBar, private dialogService: DialogService) {
     this.user = auth.authState;
     auth.auth.setPersistence('local');
     this.storage = firebaseApp.storage();
@@ -31,13 +36,33 @@ export class FirebaseService {
   }
 
   public loginWithGoogleProvider(): void {
-    this.auth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    this.auth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then((user: firebase.User) => {
+      this.db.object('/users/' + user.uid).take(1).subscribe(lgUser => {
+        if (lgUser == null) {
+          const tempUser: User = <User>{};
+          tempUser.dateCreated = Date.now().toString();
+          if (user.email) {
+            tempUser.email = user.email;
+          }
+          if (user.uid) {
+              tempUser.uid = user.uid;
+              tempUser.vanity = user.uid.toLowerCase();
+          }
+          if (user.displayName) {
+            if (user.displayName.indexOf(' ') >= 0) {
+              tempUser.fname = user.displayName.substr(0, user.displayName.indexOf(' '));
+              if (user.displayName.indexOf(' ') < user.displayName.length) {
+                tempUser.lname = user.displayName.substr(user.displayName.indexOf(' '));
+              }
+            }
+          }
+        }
+      });
+    });
   }
 
-  public loginWithEmailProvider(email: string, password: string): Promise<string> {
-    return new Promise((resolve) => {
-      this.auth.auth.signInWithEmailAndPassword(email, password).then(() => {
-        resolve('ok');
+  public loginWithEmailProvider(email: string, password: string): firebase.Promise<User> {
+    return this.auth.auth.signInWithEmailAndPassword(email, password).then(() => {
       }).catch((error: any) => {
         const errorCode = error.code;
         this.snackBar.open(error.message, 'OK', {
@@ -50,10 +75,7 @@ export class FirebaseService {
         } else {
           console.log('An unknown error occurred', error);
         }
-        resolve(errorCode);
       });
-
-    });
   }
 
   public logout(): void {
@@ -64,32 +86,72 @@ export class FirebaseService {
     });
   }
 
-  public createUserFromEmail(email: string, password: string, name?: string): Promise<string> {
-    return new Promise((resolve) => {
-      this.auth.auth.createUserWithEmailAndPassword(email, password).then((response) => {
-        this.db.object('users/' + response.uid).set({email: email, name: name, created: Date.now()});
-        resolve('ok');
-      }).catch((error: any) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        this.snackBar.open(errorMessage, 'OK', {duration: 2000});
-        if (errorCode === 'auth/weak-password') {
-        } else if (errorCode === 'auth/invalid-email') {
-        } else if (errorCode === 'auth/email-already-in-use') {
-        } else if (errorCode === 'auth/operation-not-allowed') {
-        } else {
-          console.log('An unknown error occurred', error);
-        }
-        resolve(errorCode);
-      });
+  public saveUserToDB(lgUser: User): firebase.Promise<void> {
+    return this.db.object('users/' + lgUser.uid).set(lgUser);
+  }
+
+  public createUserFromEmail(email: string, password: string, fname: string, lname: string): firebase.Promise<User> {
+    return this.auth.auth.createUserWithEmailAndPassword(email, password).then((response) => {
+
+        this.saveUserToDB(<User>{
+          email: email,
+          fname: fname,
+          lname: lname,
+          bio: '',
+          job: '',
+          company: '',
+          twitter: '',
+          facebook: '',
+          instagram: '',
+          twitch: '',
+          youtube: '',
+          google: '',
+          uid: response.uid,
+          linkedin: '',
+          resumeLink: '',
+          vanity: response.uid.toLowerCase(),
+          dateCreated: Date.now().toString(),
+        });
+      }).catch((error: firebase.FirebaseError) => {
+      if (error.code === 'auth/weak-password') {
+        this.snackBar.open('Password is too weak', 'OK', {duration: 2000});
+      } else if (error.code === 'auth/invalid-email') {
+        this.snackBar.open('Email is invalid', 'OK', {duration: 2000});
+      } else if (error.code === 'auth/email-already-in-use') {
+
+        this.mergeDialog = this.dialogService.openDialog(MergeComponent, {});
+        this.mergeDialog.componentInstance.email = email;
+        this.mergeDialog.componentInstance.firebaseService = this;
+        this.mergeDialog.afterClosed().subscribe(result => {
+          if (result === 1) {
+            // confirm
+          } else {
+            // cancel
+          }
+          this.snackBar.open('Merging accounts is not supported yet :(', 'OK', {duration: 2200});
+        });
+
+      } else if (error.code === 'auth/operation-not-allowed') {
+        this.snackBar.open('This is not allowed at this time', 'OK', {duration: 2000});
+      } else {
+        this.snackBar.open('Cannot process, unknown error', 'OK', {duration: 2000});
+      }
     });
+  }
+
+  public fetchProvidersForEmail(email: string): firebase.Promise<string[]> {
+    return this.auth.auth.fetchProvidersForEmail(email);
+  }
+
+  public sendPasswordResetEmail(email: string, actionCodeSettings: any): firebase.Promise<void> {
+    return this.auth.auth.sendPasswordResetEmail(email, actionCodeSettings);
   }
 
   public getUIDByVanity(vanity: string): FirebaseObjectObservable<any> {
     return this.db.object('/vanities/' + vanity, { preserveSnapshot: true });
   }
 
-  public getUserByUID(uid: string): FirebaseObjectObservable<User> {
+  public getLGUserByUID(uid: string): FirebaseObjectObservable<User> {
     return this.db.object('/users/' + uid);
   }
 

@@ -1,6 +1,7 @@
 export interface User {
   fname: string;
   lname: string;
+  email: string;
   bio: string;
   job: string;
   company: string;
@@ -11,6 +12,7 @@ export interface User {
   linkedin: string;
   youtube: string;
   vanity: string;
-
+  uid: string;
   resumeLink: string;
+  dateCreated: string;
 }
