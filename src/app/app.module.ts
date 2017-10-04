@@ -38,6 +38,8 @@ import { AccountComponent } from './components/account/account.component';
 import { MergeComponent } from './components/dialogs/merge/merge.component';
 import {DialogService} from './services/dialog.service';
 import {AccountPageComponent} from './pages/account/account.page.component';
+import { AboutComponent } from './components/about/about.component';
+import {LgService} from "./services/lg.service";
 
 @NgModule({
   declarations: [
@@ -51,7 +53,8 @@ import {AccountPageComponent} from './pages/account/account.page.component';
     SplashPageComponent,
     BlogComponent,
     AccountComponent,
-    MergeComponent
+    MergeComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +63,7 @@ import {AccountPageComponent} from './pages/account/account.page.component';
     FormsModule,
     ReactiveFormsModule,
     routing,
-    AngularFireModule.initializeApp(environment.firebase, 'lgfbapp'),  // imports firebase/app needed for everything
+    AngularFireModule.initializeApp(environment.firebase),  // imports firebase/app needed for everything
     AngularFireDatabaseModule, // imports firebase/database, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features
     Angulartics2Module.forRoot([ Angulartics2GoogleTagManager ]),
@@ -72,7 +75,7 @@ import {AccountPageComponent} from './pages/account/account.page.component';
     MdDatepickerModule
   ],
   exports: [FormsModule, ReactiveFormsModule],
-  providers: [FirebaseService, DialogService],
+  providers: [FirebaseService, DialogService, LgService],
   entryComponents: [MergeComponent],
   bootstrap: [AppComponent]
 })

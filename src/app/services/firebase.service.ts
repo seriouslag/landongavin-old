@@ -62,7 +62,7 @@ export class FirebaseService {
     });
   }
 
-  public loginWithEmailProvider(email: string, password: string): firebase.Promise<User> {
+  public loginWithEmailProvider(email: string, password: string): firebase.Promise<firebase.User> {
     return this.auth.auth.signInWithEmailAndPassword(email, password).then(() => {
       }).catch((error: any) => {
         const errorCode = error.code;
@@ -91,7 +91,7 @@ export class FirebaseService {
     return this.db.object('users/' + lgUser.uid).set(lgUser);
   }
 
-  public createUserFromEmail(email: string, password: string, fname: string, lname: string): firebase.Promise<User> {
+  public createUserFromEmail(email: string, password: string, fname: string, lname: string): firebase.Promise<firebase.User> {
     return this.auth.auth.createUserWithEmailAndPassword(email, password).then((response) => {
 
         this.saveUserToDB(<User>{
@@ -157,9 +157,9 @@ export class FirebaseService {
     return this.db.list('/vanities');
   }
 
-  public setUserVanity(vanity: string): firebase.Promise<any> {
+  public setUserVanity(vanity: string): Promise<any> {
     vanity = vanity.toLowerCase();
-    let uid = this.auth.auth.currentUser.uid;
+    const uid = this.auth.auth.currentUser.uid;
     let lgUser: User;
     let oldVanity: string;
     return new Promise(resolve => {
@@ -167,9 +167,9 @@ export class FirebaseService {
       req.take(1).subscribe(u => {
         lgUser = u;
         oldVanity = lgUser.vanity;
-        this.db.object('/vanities').update({[lgUser.vanity]:null});
+        this.db.object('/vanities').update({[lgUser.vanity]: null});
         this.db.object('users/' + uid).update({vanity: vanity});
-        return resolve(this.db.object('/vanities').update({[vanity]:lgUser.uid}));
+        return resolve(this.db.object('/vanities').update({[vanity]: lgUser.uid}));
       });
     });
   }

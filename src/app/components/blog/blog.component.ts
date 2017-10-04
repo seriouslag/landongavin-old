@@ -11,6 +11,9 @@ import {Card} from '../../interfaces/card';
 })
 export class BlogComponent implements OnInit, OnDestroy {
 
+  waiting = true;
+  failed = false;
+
   private blogSubscription: Subscription;
   blogList: Blog[];
   private videoList: string[] = [
@@ -26,6 +29,10 @@ export class BlogComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.blogSubscription = this.firebaseService.getBlogPostsFromFB().subscribe(blogList => {
       this.blogList = this.sortBlogArrayByIdDesc(this.parseCardArrayToBlogArray(blogList));
+      this.waiting = false;
+      this.failed = false;
+    }, err => {
+      this.failed = true;
     });
   }
 

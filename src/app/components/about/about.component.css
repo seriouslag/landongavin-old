@@ -1,0 +1,11 @@
+a {
+  color: black;
+}
+
+md-card-actions {
+  margin-bottom: -16px;
+}
+
+p {
+  max-width: 420px;
+}

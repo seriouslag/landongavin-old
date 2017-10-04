@@ -12,6 +12,7 @@ md-card-actions {
 
 md-card {
   max-width: 650px;
+  min-width: 300px;
 }
 
 p {

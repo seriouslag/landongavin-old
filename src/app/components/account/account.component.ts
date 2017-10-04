@@ -34,6 +34,9 @@ export class AccountComponent implements OnInit, OnDestroy {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
+    if (this.lgUserSubscription) {
+      this.lgUserSubscription.unsubscribe();
+    }
   }
 
   public logout(): void {

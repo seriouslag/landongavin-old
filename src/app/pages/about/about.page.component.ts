@@ -14,38 +14,30 @@ export class AboutPageComponent implements OnInit, OnDestroy {
 
   waiting = true;
   failed = false;
-  noImg = true;
-  user: firebase.User;
   aboutUser: User;
   aboutUID: string;
-  aboutUserPic: string;
-  private userSubscription: Subscription;
+
+  private routerSubscription: Subscription;
   private vanitySubscription: Subscription;
+  private lgUserSubscription: Subscription;
 
   constructor(private firebaseService: FirebaseService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.userSubscription = this.firebaseService.user.subscribe(user => {
-      this.user = user;
-    });
-    this.vanitySubscription = this.activatedRoute.params
+
+    this.routerSubscription = this.activatedRoute.params
       .subscribe(
         params => {
-          this.firebaseService.getUIDByVanity(params['vanity'].toLowerCase()).subscribe(aboutUID => {
+          this.vanitySubscription = this.firebaseService.getUIDByVanity(params['vanity'].toLowerCase()).subscribe(aboutUID => {
+            console.log('this should change', aboutUID.val());
             this.waiting = false;
             this.aboutUID = aboutUID.val();
             if (this.aboutUID != null) {
               this.failed = false;
-              this.firebaseService.getUserProfileImg(this.aboutUID).then((url: string) => {
-                this.aboutUserPic = url;
-                this.noImg = false;
-              }, () => {
-                this.noImg = true;
-                console.log('FIREBASE STORAGE IMG NOT FOUND');
-              });
               this.getUserByUID(this.aboutUID);
             } else {
               this.failed = true;
+              this.aboutUser = null;
             }
           });
         }
@@ -53,17 +45,23 @@ export class AboutPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
     if (this.vanitySubscription) {
       this.vanitySubscription.unsubscribe();
+    }
+    if (this.lgUserSubscription) {
+      this.lgUserSubscription.unsubscribe();
+    }
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
     }
   }
 
   private getUserByUID(uid: string) {
-    this.firebaseService.getLGUserByUID(uid).subscribe(aboutUser => {
+    this.lgUserSubscription = this.firebaseService.getLGUserByUID(uid).subscribe(aboutUser => {
       this.aboutUser = aboutUser as User;
+      if (aboutUser === null) {
+        this.failed = true;
+      }
     });
   }
 }

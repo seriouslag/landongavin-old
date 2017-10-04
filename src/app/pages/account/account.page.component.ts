@@ -45,9 +45,6 @@ export class AccountPageComponent implements OnInit, OnDestroy {
           this.settingsForm.controls['firstname'].patchValue(lgUser.fname);
           this.settingsForm.controls['lastname'].patchValue(lgUser.lname);
           this.settingsForm.controls['vanity'].patchValue(lgUser.vanity);
-          if (this.lgUserSubscription) {
-            this.lgUserSubscription.unsubscribe();
-          }
         });
       } else {
         this.lgUser = null;
@@ -76,18 +73,18 @@ export class AccountPageComponent implements OnInit, OnDestroy {
   private vanityMatchValidator(control: AbstractControl): Promise<any> {
     const vanityCheck = control.value;
 
-    let check = false;
+    const check = false;
     // should do check  on backend to see if request vanity is available but this works for now
     return new Promise(resolve => {
       const req = this.firebaseService.getAllVanities();
       req.take(1).subscribe(vanities => {
         for (const vanity of vanities) {
-          if (vanity['$key'] === vanityCheck && vanityCheck != this.lgUser.vanity) {
+          if (vanity['$key'] === vanityCheck && vanityCheck !== this.lgUser.vanity) {
             return resolve({vanityInUse: true});
           }
         }
 
-        if(check === false) {
+        if (check === false) {
           return resolve(null);
         }
       });
@@ -104,24 +101,17 @@ export class AccountPageComponent implements OnInit, OnDestroy {
 
   public saveUserInfo(): void {
     const update = {};
-    if (this.lgUser.fname != this.settingsForm.controls['firstname'].value) {
+    if (this.lgUser.fname !== this.settingsForm.controls['firstname'].value) {
       update['fname'] = this.settingsForm.controls['firstname'].value;
     }
-    if (this.lgUser.lname != this.settingsForm.controls['lastname'].value) {
+    if (this.lgUser.lname !== this.settingsForm.controls['lastname'].value) {
       update['lname'] = this.settingsForm.controls['lastname'].value;
     }
-    if (this.lgUser.vanity != this.settingsForm.controls['vanity'].value) {
+    if (this.lgUser.vanity !== this.settingsForm.controls['vanity'].value) {
       this.firebaseService.setUserVanity(this.settingsForm.controls['vanity'].value);
     }
 
     this.firebaseService.updateUserInfo(update);
-
-    this.lgUserSubscription = this.firebaseService.getLGUserByUID(this.user.uid).subscribe(lgUser => {
-      this.lgUser = lgUser;
-      this.settingsForm.controls['firstname'].patchValue(lgUser.fname);
-      this.settingsForm.controls['lastname'].patchValue(lgUser.lname);
-      this.settingsForm.controls['vanity'].patchValue(lgUser.vanity);
-    });
 
     this.snackBar.open('You account information has been updated :D', 'OK', {duration: 3000});
   }
