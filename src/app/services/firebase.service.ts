@@ -47,6 +47,7 @@ export class FirebaseService {
           if (user.uid) {
               tempUser.uid = user.uid;
               tempUser.vanity = user.uid.toLowerCase();
+              this.setUserVanity(user.uid.toLowerCase());
           }
           if (user.displayName) {
             if (user.displayName.indexOf(' ') >= 0) {
@@ -94,24 +95,16 @@ export class FirebaseService {
     return this.auth.auth.createUserWithEmailAndPassword(email, password).then((response) => {
 
         this.saveUserToDB(<User>{
-          email: email,
-          fname: fname,
-          lname: lname,
-          bio: '',
-          job: '',
-          company: '',
-          twitter: '',
-          facebook: '',
-          instagram: '',
-          twitch: '',
-          youtube: '',
-          google: '',
-          uid: response.uid,
-          linkedin: '',
-          resumeLink: '',
+          email: email, fname: fname, lname: lname,
+          bio: '', job: '', company: '', twitter: '',
+          facebook: '', instagram: '', twitch: '', youtube: '',
+          google: '', uid: response.uid, linkedin: '', resumeLink: '',
           vanity: response.uid.toLowerCase(),
           dateCreated: Date.now().toString(),
         });
+
+        this.setUserVanity(response.uid.toLowerCase());
+
       }).catch((error: firebase.FirebaseError) => {
       if (error.code === 'auth/weak-password') {
         this.snackBar.open('Password is too weak', 'OK', {duration: 2000});
@@ -159,4 +152,29 @@ export class FirebaseService {
     return this.storageRef.child('users/' + uid + '/profile.jpg').getDownloadURL();
   }
 
+  // Use until backend is setup
+  public getAllVanities(): FirebaseListObservable<any> {
+    return this.db.list('/vanities');
+  }
+
+  public setUserVanity(vanity: string): firebase.Promise<any> {
+    vanity = vanity.toLowerCase();
+    let uid = this.auth.auth.currentUser.uid;
+    let lgUser: User;
+    let oldVanity: string;
+    return new Promise(resolve => {
+      const req = this.getLGUserByUID(uid);
+      req.take(1).subscribe(u => {
+        lgUser = u;
+        oldVanity = lgUser.vanity;
+        this.db.object('/vanities').update({[lgUser.vanity]:null});
+        this.db.object('users/' + uid).update({vanity: vanity});
+        return resolve(this.db.object('/vanities').update({[vanity]:lgUser.uid}));
+      });
+    });
+  }
+
+  public updateUserInfo(updateObject: any): firebase.Promise<any> {
+    return this.db.object('/users/' + this.auth.auth.currentUser.uid).update(updateObject);
+  }
 }

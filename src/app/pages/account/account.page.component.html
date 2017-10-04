@@ -19,6 +19,23 @@
             class="errorHints">Last Name must be longer than 2 characters.
           </md-hint>
         </md-input-container>
+
+        <md-input-container>
+          <input mdInput placeholder="Vanity" type="text" formControlName="vanity" value="{{lgUser?.vanity}}">
+          <md-hint
+            *ngIf="settingsForm.controls['vanity'].hasError('minlength') && settingsForm.controls['vanity'].touched"
+            class="errorHints">Vanity must be between 3 and 30 characters long.
+          </md-hint>
+          <md-hint
+            *ngIf="settingsForm.controls['vanity'].hasError('vanityInUse') && settingsForm.controls['vanity'].touched"
+            class="errorHints">This vanity is already in use.
+          </md-hint>
+          <md-hint
+            *ngIf="settingsForm.controls['vanity'].hasError('vanity') && settingsForm.controls['vanity'].touched && !settingsForm.controls['vanity'].hasError('minlength') && !settingsForm.controls['vanity'].hasError('vanityInUse') && settingsForm.controls['vanity'].touched"
+            class="errorHints">Vanity must start with a letter and can only contain letters and numbers.
+          </md-hint>
+        </md-input-container>
+
         <!--
         <div fxLayout="column" fxLayoutGap="10px" formGroupName="matchingPassword">
           <md-input-container>
@@ -53,9 +70,13 @@
         <button md-button type="button" (click)="resetPassword()">Reset Password</button>
         <md-card-actions fxLayout="row" fxLayoutAlign="center center">
           <button md-button md-tooltip="Save" [mdTooltipShowDelay]="500" type="submit"
-                  [disabled]="(settingsForm.controls['firstname'].value === lgUser.fname || settingsForm.controls['firstname'].value === '') && (settingsForm.controls['lastname'].value === lgUser.lname || settingsForm.controls['lastname'].value === '')">Save
+                  [disabled]="(settingsForm.controls['firstname'].value === lgUser.fname || settingsForm.controls['firstname'].value === '')
+                  && (settingsForm.controls['lastname'].value === lgUser.lname || settingsForm.controls['lastname'].value === '')
+                  && (settingsForm.controls['vanity'].value === lgUser.vanity || settingsForm.controls['vanity'].value === '') || settingsForm.invalid">Save
           </button>
         </md-card-actions>
+
+
 
       </form>
       <p *ngIf="user == null">

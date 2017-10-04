@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {FirebaseService} from '../../services/firebase.service';
 import {User} from '../../interfaces/user';
 import {Subscription} from 'rxjs/Subscription';
@@ -18,36 +18,19 @@ export class AccountPageComponent implements OnInit, OnDestroy {
   user: firebase.User;
   lgUser: User;
 
-
-
-  matchingPassword: FormGroup = new FormGroup({
-    password: new FormControl(null, [Validators.required, Validators.minLength(8), this.validatePW]),
-    cpassword: new FormControl(null, [Validators.required]),
-  }, this.passwordMatchValidator);
-
   settingsForm: FormGroup = new FormGroup({
     firstname: new FormControl(null, [Validators.minLength(2)]),
     lastname: new FormControl(null, [Validators.minLength(2)]),
-    matchingPassword: this.matchingPassword,
+    vanity: new FormControl(null, [Validators.minLength(3), Validators.maxLength(30), this.validateVanity],  [ this.vanityMatchValidator.bind(this)])
   });
 
   constructor(private firebaseService: FirebaseService, private snackBar: MdSnackBar) {
     this.lgUser = {
-      fname: 'First',
-      lname: 'Last',
-      email: '',
-      bio: '',
-      job: '',
-      company: '',
-      twitch: '',
-      youtube: '',
-      facebook: '',
-      twitter: '',
-      linkedin: '',
-      instagram: '',
-      resumeLink: '',
-      vanity: '',
-      dateCreated: '',
+      fname: 'First', lname: 'Last', email: '',
+      bio: '', job: '', company: '',
+      twitch: '', youtube: '', facebook: '',
+      twitter: '', linkedin: '', instagram: '',
+      resumeLink: '', vanity: 'Vanity', dateCreated: '',
       uid: ''
     };
 
@@ -57,10 +40,11 @@ export class AccountPageComponent implements OnInit, OnDestroy {
     this.userSubscription = this.firebaseService.user.subscribe(user => {
       this.user = user;
       if (user != null) {
-        this.lgUserSubscription = this.firebaseService.getLGUserByUID(user.uid).take(1).subscribe(lgUser => {
+        this.lgUserSubscription = this.firebaseService.getLGUserByUID(user.uid).subscribe(lgUser => {
           this.lgUser = lgUser;
           this.settingsForm.controls['firstname'].patchValue(lgUser.fname);
           this.settingsForm.controls['lastname'].patchValue(lgUser.lname);
+          this.settingsForm.controls['vanity'].patchValue(lgUser.vanity);
           if (this.lgUserSubscription) {
             this.lgUserSubscription.unsubscribe();
           }
@@ -80,25 +64,34 @@ export class AccountPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  private passwordMatchValidator(fg: FormGroup) {
-    const password = fg.get('password').value;
-    const cpassword = fg.get('cpassword').value;
+  private validateVanity(fc: FormControl) {
+    const VANITY_REGEXP = /^[a-zA-Z][a-zA-Z0-9]{2,29}$/;
 
-    if (password === cpassword) {
-      fg.get('cpassword').setErrors(null);
-      return null;
-    } else {
-      fg.get('cpassword').setErrors({'mismatch': true});
-      return {'mismatch': true};
-    }
+    console.log(VANITY_REGEXP.test(fc.value), fc.value);
+    return VANITY_REGEXP.test(fc.value) ? null : {
+      'vanity': true
+    };
   }
 
-  private validatePW(fc: FormControl) {
-    const PW_REGEXP = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@!%*?&()])[A-Za-z\d$@!%*?&]{8,}/;
+  private vanityMatchValidator(control: AbstractControl): Promise<any> {
+    const vanityCheck = control.value;
 
-    return PW_REGEXP.test(fc.value) ? null : {
-      'pw': true
-    };
+    let check = false;
+    // should do check  on backend to see if request vanity is available but this works for now
+    return new Promise(resolve => {
+      const req = this.firebaseService.getAllVanities();
+      req.take(1).subscribe(vanities => {
+        for (const vanity of vanities) {
+          if (vanity['$key'] === vanityCheck && vanityCheck != this.lgUser.vanity) {
+            return resolve({vanityInUse: true});
+          }
+        }
+
+        if(check === false) {
+          return resolve(null);
+        }
+      });
+    });
   }
 
   public resetPassword(): void {
@@ -110,7 +103,26 @@ export class AccountPageComponent implements OnInit, OnDestroy {
   }
 
   public saveUserInfo(): void {
-    this.snackBar.open('This is not implemented yet :(', 'OK', {duration: 2000});
-  }
+    const update = {};
+    if (this.lgUser.fname != this.settingsForm.controls['firstname'].value) {
+      update['fname'] = this.settingsForm.controls['firstname'].value;
+    }
+    if (this.lgUser.lname != this.settingsForm.controls['lastname'].value) {
+      update['lname'] = this.settingsForm.controls['lastname'].value;
+    }
+    if (this.lgUser.vanity != this.settingsForm.controls['vanity'].value) {
+      this.firebaseService.setUserVanity(this.settingsForm.controls['vanity'].value);
+    }
 
+    this.firebaseService.updateUserInfo(update);
+
+    this.lgUserSubscription = this.firebaseService.getLGUserByUID(this.user.uid).subscribe(lgUser => {
+      this.lgUser = lgUser;
+      this.settingsForm.controls['firstname'].patchValue(lgUser.fname);
+      this.settingsForm.controls['lastname'].patchValue(lgUser.lname);
+      this.settingsForm.controls['vanity'].patchValue(lgUser.vanity);
+    });
+
+    this.snackBar.open('You account information has been updated :D', 'OK', {duration: 3000});
+  }
 }
