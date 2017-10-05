@@ -1,32 +1,42 @@
-<div fxLayout="column" fxLayoutGap="10px">
-  <md-card *ngFor="let blog of blogList" class="blogPost">
-    <md-card-title>
-      {{blog.title}}
-    </md-card-title>
-    <md-card-subtitle>
-      {{blog.subtitle}}
-    </md-card-subtitle>
-    <div class="videoContainer" *ngIf="blog.hasVideo">
-      <video poster="{{blog.image}}" preload="auto" muted loop autoplay class="blogVideo">
-        <source src="{{blog.image}}" type="video/{{blog.videoType}}">
-      </video>
-    </div>
-    <img src="{{blog.image}}" *ngIf="!blog.hasVideo && blog.image.length>0" class="blogImage">
-    <md-card-content>
-      {{blog.content}}
+<div fxLayout="row" fxLayoutAlign="center center">
+  <div fxFlex></div>
+  <div fxLayout="column" fxLayoutGap="10px" >
+    <md-card *ngFor="let blog of blogList" class="blogPost">
+      <md-card-title>
+        {{blog.title}}
+      </md-card-title>
+      <md-card-subtitle>
+        {{blog.subtitle}}
+      </md-card-subtitle>
+      <div fxLayout="row" fxLayoutAlign="centet center">
+        <div fxFlex></div>
+        <div class="videoContainer" *ngIf="blog.hasVideo">
+          <video poster="{{blog.image}}" preload="auto" muted loop autoplay class="blogVideo">
+            <source src="{{blog.image}}" type="video/{{blog.videoType}}">
+          </video>
+        </div>
+        <img src="{{blog.image}}" *ngIf="!blog.hasVideo && blog.image.length>0"
+          [ngClass]="{'blogImageLarge': cardSize===0, 'blogImageSmall': cardSize===1}"
+        >
+        <div fxFlex></div>
+      </div>
+      <md-card-content>
+        {{blog.content}}
+      </md-card-content>
+      <md-card-footer>
+        {{blog.footer}}
+      </md-card-footer>
+    </md-card>
+  </div>
+
+  <md-card *ngIf="waiting === true || failed === true">
+    <md-spinner *ngIf="waiting === true && failed === false"></md-spinner>
+    <md-card-content *ngIf="waiting === false && failed === true">
+      User was not found.
+      <br>
+      <button md-button routerLink="/home" color="primary">Home</button>
     </md-card-content>
-    <md-card-footer>
-      {{blog.footer}}
-    </md-card-footer>
+
   </md-card>
+  <div fxFlex></div>
 </div>
-
-<md-card *ngIf="waiting === true || failed === true">
-  <md-spinner *ngIf="waiting === true && failed === false"></md-spinner>
-  <md-card-content *ngIf="waiting === false && failed === true">
-    User was not found.
-    <br>
-    <button md-button routerLink="/home" color="primary">Home</button>
-  </md-card-content>
-
-</md-card>

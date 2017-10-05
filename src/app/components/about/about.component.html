@@ -20,7 +20,7 @@
         {{aboutUser.bio}}
       </p>
       <p *ngIf="!aboutUser.bio">
-        User has not entered a bio yet :(
+        {{aboutUser.fname}} has not entered a bio yet :(
       </p>
       <div fxFlex></div>
       <a *ngIf="aboutUser.resumeLink" href="{{aboutUser.resumeLink}}"><button md-raised-button>Résumé</button></a>

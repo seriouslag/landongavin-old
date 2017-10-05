@@ -11,6 +11,16 @@
   max-width: 400px;
 }
 
+.blogImageSmall {
+  max-height: 300px;
+  max-width: 200px;
+}
+
+.blogImageLarge {
+  max-height: 400px;
+  max-width: 400px;
+}
+
 .blogVideo {
   max-height: 100%;
   object-fit: cover;
