@@ -1,39 +1,41 @@
-<md-card-header  fxLayout="row">
-  <img md-card-avatar class="profile_image" src="{{aboutUserPic}}" *ngIf="noImg === false">
-  <md-card-title>
-    <div>
-      {{aboutUser.fname}} {{aboutUser.lname}}
-    </div>
-  </md-card-title>
-  <div fxFlex></div>
-  <div *ngIf="showEditBtn === true">
-    <button md-button (click)="enterEditMode()">Edit</button>
-  </div>
-  <md-card-subtitle>{{aboutUser.job}} <span *ngIf="aboutUser.company">@</span> {{aboutUser.company}}</md-card-subtitle>
-</md-card-header>
-
-<md-card-content>
-  <div fxLayout="row">
-    Bio:
-    <p *ngIf="aboutUser.bio">
-      {{aboutUser.bio}}
-    </p>
-    <p *ngIf="!aboutUser.bio">
-      User has not entered a bio yet :(
-    </p>
+<md-card>
+  <md-card-header  fxLayout="row">
+    <img md-card-avatar class="profile_image" src="{{aboutUserPic}}" *ngIf="noImg === false">
+    <md-card-title>
+      <div>
+        {{aboutUser.fname}} {{aboutUser.lname}}
+      </div>
+    </md-card-title>
     <div fxFlex></div>
-    <a *ngIf="aboutUser.resumeLink" href="{{aboutUser.resumeLink}}"><button md-raised-button>Résumé</button></a>
-  </div>
+    <div *ngIf="showEditBtn === true">
+      <button md-button (click)="enterEditMode()">Edit</button>
+    </div>
+    <md-card-subtitle>{{aboutUser.job}} <span *ngIf="aboutUser.company">@</span> {{aboutUser.company}}</md-card-subtitle>
+  </md-card-header>
 
-</md-card-content>
-<md-card-actions>
+  <md-card-content>
+    <div fxLayout="row">
+      Bio:
+      <p *ngIf="aboutUser.bio">
+        {{aboutUser.bio}}
+      </p>
+      <p *ngIf="!aboutUser.bio">
+        User has not entered a bio yet :(
+      </p>
+      <div fxFlex></div>
+      <a *ngIf="aboutUser.resumeLink" href="{{aboutUser.resumeLink}}"><button md-raised-button>Résumé</button></a>
+    </div>
 
-  <div fxLayout="row" fxLayoutAlign="space-around center">
-    <a *ngIf="aboutUser.instagram" href="https://www.instagram.com/{{aboutUser.instagram}}"><button md-icon-button><i class="mdi mdi-24px mdi-instagram icon"></i></button></a>
-    <a *ngIf="aboutUser.facebook" href="https://www.facebook.com/{{aboutUser.facebook}}"><button md-icon-button><i class="mdi mdi-24px mdi-facebook-box icon"></i></button></a>
-    <a *ngIf="aboutUser.youtube" href="https://www.youtube.com/{{aboutUser.youtube}}"> <button md-icon-button><i class="mdi mdi-24px mdi-youtube-play icon"></i></button></a>
-    <a *ngIf="aboutUser.twitter" href="https://twitter.com/{{aboutUser.twitter}}"><button md-icon-button><i class="mdi mdi-24px mdi-twitter-box icon"></i></button></a>
-    <a *ngIf="aboutUser.twitch" href="https://www.twitch.tv/{{aboutUser.twitch}}"><button md-icon-button><i class="mdi mdi-24px mdi-twitch icon"></i></button></a>
-    <a *ngIf="aboutUser.linkedin" href="https://www.linkedin.com/in/{{aboutUser.linkedin}}"> <button md-icon-button><i class="mdi mdi-24px mdi-linkedin-box icon"></i></button></a>
-  </div>
-</md-card-actions>
+  </md-card-content>
+  <md-card-actions>
+
+    <div fxLayout="row" fxLayoutAlign="space-around center">
+      <a *ngIf="aboutUser.instagram" href="https://www.instagram.com/{{aboutUser.instagram}}"><button md-icon-button><i class="mdi mdi-24px mdi-instagram icon"></i></button></a>
+      <a *ngIf="aboutUser.facebook" href="https://www.facebook.com/{{aboutUser.facebook}}"><button md-icon-button><i class="mdi mdi-24px mdi-facebook-box icon"></i></button></a>
+      <a *ngIf="aboutUser.youtube" href="https://www.youtube.com/{{aboutUser.youtube}}"> <button md-icon-button><i class="mdi mdi-24px mdi-youtube-play icon"></i></button></a>
+      <a *ngIf="aboutUser.twitter" href="https://twitter.com/{{aboutUser.twitter}}"><button md-icon-button><i class="mdi mdi-24px mdi-twitter-box icon"></i></button></a>
+      <a *ngIf="aboutUser.twitch" href="https://www.twitch.tv/{{aboutUser.twitch}}"><button md-icon-button><i class="mdi mdi-24px mdi-twitch icon"></i></button></a>
+      <a *ngIf="aboutUser.linkedin" href="https://www.linkedin.com/in/{{aboutUser.linkedin}}"> <button md-icon-button><i class="mdi mdi-24px mdi-linkedin-box icon"></i></button></a>
+    </div>
+  </md-card-actions>
+</md-card>

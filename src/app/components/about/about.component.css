@@ -1,9 +1,18 @@
+.profile_image {
+  background-size: cover;
+}
+
 a {
   color: black;
 }
 
 md-card-actions {
   margin-bottom: -16px;
+}
+
+md-card {
+  max-width: 650px;
+  min-width: 300px;
 }
 
 p {
