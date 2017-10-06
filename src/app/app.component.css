@@ -6,7 +6,7 @@ app-root:host {
 .app_wrapper {
   display: block;
   background-color: transparent;
-
+  z-index: 1;
 }
 
 .background {
@@ -20,15 +20,11 @@ app-root:host {
   min-width: 100vw;
 }
 
-
 .header {
   height: 75px;
   width: 100%;
   padding: 10px;
   z-index: 999;
-}
-
-.content_wrapper {
 }
 
 .router_wrapper {
