@@ -1,0 +1,15 @@
+<span *ngIf="editMode === false">
+  {{text}}
+</span>
+
+<md-input-container *ngIf="editMode === true && type === 'textarea'">
+
+  <textarea #input mdInput mdTextareaAutosize [mdAutosizeMaxRows]="15" placeholder="{{placeholder}}" [value]="text" [attr.maxlength]="maxlength"></textarea>
+  <md-hint align="end">{{input.value.length}} / {{maxlength}}</md-hint>
+</md-input-container>
+
+<md-input-container *ngIf="editMode === true && type !== 'textarea'" class="smallInput">
+
+  <input #input mdInput placeholder="{{placeholder}}" [attr.maxlength]="maxlength" type="text" value="{{text}}">
+  <md-hint align="end">{{input.value.length}} / {{maxlength}}</md-hint>
+</md-input-container>
