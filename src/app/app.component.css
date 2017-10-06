@@ -5,7 +5,7 @@ app-root:host {
 .app_wrapper {
   min-height: 100vh;
   display: block;
-  background: #ffffff url("../assets/images/background.jpg") no-repeat fixed center;
+  background: #ffffff url("../assets/images/background.jpg") no-repeat fixed;
   background-size: cover;
 }
 
