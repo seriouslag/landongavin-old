@@ -60,6 +60,7 @@ export class AboutPageComponent implements OnInit, OnDestroy {
       this.aboutUser = aboutUser as User;
       if (aboutUser === null) {
         this.failed = true;
+        this.waiting = false;
       }
     });
   }

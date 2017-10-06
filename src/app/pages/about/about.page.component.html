@@ -1,7 +1,5 @@
 <div fxFlex fxLayout="column" fxLayoutGap="100px" fxLayoutAlign="center center">
-
-
-    <app-about *ngIf="aboutUser && waiting === false && failed === false" [aboutUser]="aboutUser"></app-about>
+  <app-about *ngIf="aboutUser && waiting === false && failed === false" [aboutUser]="aboutUser"></app-about>
   <md-card *ngIf="waiting === true || failed === true" fxLayoutAlign="center center">
     <md-spinner *ngIf="waiting === true && failed === false"></md-spinner>
     <md-card-content *ngIf="waiting === false && failed === true">
