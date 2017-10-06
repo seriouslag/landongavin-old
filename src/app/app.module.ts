@@ -41,6 +41,7 @@ import {AccountPageComponent} from './pages/account/account.page.component';
 import { AboutComponent } from './components/about/about.component';
 import {LgService} from './services/lg.service';
 import { QuestionDialogComponent } from './components/dialogs/question-dialog/question-dialog.component';
+import { TextInputComponent } from './components/editable/text-input/text-input.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { QuestionDialogComponent } from './components/dialogs/question-dialog/qu
     AccountComponent,
     MergeComponent,
     AboutComponent,
-    QuestionDialogComponent
+    QuestionDialogComponent,
+    TextInputComponent
   ],
   imports: [
     BrowserModule,
