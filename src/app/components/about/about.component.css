@@ -18,3 +18,7 @@ md-card {
 p {
   max-width: 420px;
 }
+
+.bio {
+  max-width: 250px;
+}
