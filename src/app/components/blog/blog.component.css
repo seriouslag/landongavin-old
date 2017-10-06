@@ -7,18 +7,28 @@
 }
 
 .blogImage {
-  max-height: 400px;
-  max-width: 400px;
+  max-height: 450px;
+  max-width: 450px;
 }
 
-.blogImageSmall {
+.blogImageXSmall {
   max-height: 300px;
   max-width: 200px;
 }
 
-.blogImageLarge {
+.blogImageSmall {
   max-height: 400px;
+  max-width: 350px;
+}
+
+.blogImageMed {
   max-width: 400px;
+  max-height: 400px;
+}
+
+.blogImageLarge {
+  max-height: 600px;
+  max-width: 600px;
 }
 
 .blogVideo {

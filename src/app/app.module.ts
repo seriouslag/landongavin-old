@@ -39,7 +39,8 @@ import { MergeComponent } from './components/dialogs/merge/merge.component';
 import {DialogService} from './services/dialog.service';
 import {AccountPageComponent} from './pages/account/account.page.component';
 import { AboutComponent } from './components/about/about.component';
-import {LgService} from "./services/lg.service";
+import {LgService} from './services/lg.service';
+import { QuestionDialogComponent } from './components/dialogs/question-dialog/question-dialog.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import {LgService} from "./services/lg.service";
     BlogComponent,
     AccountComponent,
     MergeComponent,
-    AboutComponent
+    AboutComponent,
+    QuestionDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -76,7 +78,7 @@ import {LgService} from "./services/lg.service";
   ],
   exports: [FormsModule, ReactiveFormsModule],
   providers: [FirebaseService, DialogService, LgService],
-  entryComponents: [MergeComponent],
+  entryComponents: [MergeComponent, QuestionDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -16,7 +16,7 @@
           </video>
         </div>
         <img src="{{blog.image}}" *ngIf="!blog.hasVideo && blog.image.length>0"
-          [ngClass]="{'blogImageLarge': cardSize===0, 'blogImageSmall': cardSize===1}"
+          [ngClass]="{'blogImageLarge': cardSize === 3, 'blogImageMed': cardSize === 2, 'blogImageSmall': cardSize === 1, 'blogImageXSmall': cardSize === 0}"
         >
         <div fxFlex></div>
       </div>

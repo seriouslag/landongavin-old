@@ -4,6 +4,9 @@ import {FirebaseService} from '../../services/firebase.service';
 import {User} from '../../interfaces/user';
 import {Subscription} from 'rxjs/Subscription';
 import {MdSnackBar} from '@angular/material/snack-bar';
+import {DialogService} from '../../services/dialog.service';
+import {MdDialogRef} from '@angular/material';
+import {QuestionDialogComponent} from '../../components/dialogs/question-dialog/question-dialog.component';
 
 @Component({
   selector: 'app-account-app',
@@ -18,13 +21,15 @@ export class AccountPageComponent implements OnInit, OnDestroy {
   user: firebase.User;
   lgUser: User;
 
+  confirmDialog: MdDialogRef<QuestionDialogComponent>;
+
   settingsForm: FormGroup = new FormGroup({
     firstname: new FormControl(null, [Validators.minLength(2)]),
     lastname: new FormControl(null, [Validators.minLength(2)]),
     vanity: new FormControl(null, [Validators.minLength(3), Validators.maxLength(30), this.validateVanity],  [ this.vanityMatchValidator.bind(this)])
   });
 
-  constructor(private firebaseService: FirebaseService, private snackBar: MdSnackBar) {
+  constructor(private firebaseService: FirebaseService, private dialogService: DialogService, private snackBar: MdSnackBar) {
     this.lgUser = {
       fname: 'First', lname: 'Last', email: '',
       bio: '', job: '', company: '',
@@ -33,7 +38,6 @@ export class AccountPageComponent implements OnInit, OnDestroy {
       resumeLink: '', vanity: 'Vanity', dateCreated: '',
       uid: ''
     };
-
   }
 
   ngOnInit() {
@@ -64,7 +68,6 @@ export class AccountPageComponent implements OnInit, OnDestroy {
   private validateVanity(fc: FormControl) {
     const VANITY_REGEXP = /^[a-zA-Z][a-zA-Z0-9]{2,29}$/;
 
-    console.log(VANITY_REGEXP.test(fc.value), fc.value);
     return VANITY_REGEXP.test(fc.value) ? null : {
       'vanity': true
     };
@@ -92,11 +95,22 @@ export class AccountPageComponent implements OnInit, OnDestroy {
   }
 
   public resetPassword(): void {
-    this.firebaseService.sendPasswordResetEmail(this.user.email, {}).then(() => {
-      this.snackBar.open('Password reset email sent to ' + this.user.email + '.', 'OK', {duration: 5000});
-    }).catch(() => {
-      this.snackBar.open('Something went wrong, try again later.', 'OK', {duration: 5000});
+    this.confirmDialog = this.dialogService.openDialog(QuestionDialogComponent, {});
+    this.confirmDialog.componentInstance.customText = 'Reset Password?';
+    this.confirmDialog.componentInstance.showButtonText = true;
+
+    this.confirmDialog.afterClosed().take(1).subscribe(result => {
+      if (result === 1) {
+        this.firebaseService.sendPasswordResetEmail(this.user.email, {}).then(() => {
+          this.snackBar.open('Password reset email sent to ' + this.user.email + '.', 'OK', {duration: 5000});
+        }).catch(() => {
+          this.snackBar.open('Something went wrong, try again later.', 'OK', {duration: 5000});
+        });
+      } else {
+        // Did nothing
+      }
     });
+
   }
 
   public saveUserInfo(): void {

@@ -32,16 +32,13 @@ export class BlogComponent implements OnInit, OnDestroy {
   constructor(private firebaseService: FirebaseService,  private observableMedia: ObservableMedia) {
     this.mediaSubscription = this.observableMedia.subscribe((mediaAlias: MediaChange) => {
       this.mediaAlias = mediaAlias.mqAlias;
-      this.loadMobileContent();
+      this.setContentSize();
     });
   }
 
   ngOnInit() {
-    console.log(this.observableMedia.isActive('xs'), this.observableMedia.isActive('sm'), this.observableMedia.isActive('md'), this.observableMedia.isActive('lg'));
-
-
-      this.loadMobileContent();
-
+    // call this here because the subscription to ObservableMedia does fire on load sometimes????
+    this.setContentSize();
 
     this.blogSubscription = this.firebaseService.getBlogPostsFromFB().subscribe(blogList => {
       this.blogList = this.sortBlogArrayByIdDesc(this.parseCardArrayToBlogArray(blogList));
@@ -52,12 +49,15 @@ export class BlogComponent implements OnInit, OnDestroy {
     });
   }
 
-  private loadMobileContent(): void {
+  private setContentSize(): void {
     if (this.observableMedia.isActive('xs')) {
-      console.log('here');
-      this.cardSize = 1;
-    } else {
       this.cardSize = 0;
+    } else if (this.observableMedia.isActive('sm')) {
+      this.cardSize = 1;
+    }  else if (this.observableMedia.isActive('md')) {
+      this.cardSize = 2;
+    } else {
+      this.cardSize = 3;
     }
   }
 
@@ -108,10 +108,8 @@ export class BlogComponent implements OnInit, OnDestroy {
       };
       if (blog.image.length > 0) {
         const extension: string = card.image.substr(card.image.lastIndexOf('.') + 1).toLowerCase();
-        // const extension: string = card.image.substr(card.image.length - 3).toLocaleLowerCase();
         let allowed = false;
         for (const type of this.videoList) {
-          console.log(type, extension);
           if (extension === type) {
             blog.hasVideo = true;
             if (type === 'ogv' || type === 'ogm') {
