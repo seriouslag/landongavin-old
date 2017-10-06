@@ -4,6 +4,7 @@ import {LgService} from '../../services/lg.service';
 import {Subscription} from 'rxjs/Subscription';
 import {FirebaseService} from '../../services/firebase.service';
 import {MdSnackBar} from '@angular/material/snack-bar';
+import {isUndefined} from 'util';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
 
   editMode = false;
   showEditBtn = false;
+  editBtnText = 'Edit';
 
   user: firebase.User;
 
@@ -55,9 +57,19 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
     // when the aboutUser changes change the profile pic
     for (const propName in changes) {
       if (propName === 'aboutUser') {
-        this.noImg = true;
-        
-        this.handleProfilePic();
+        this.handleAboutUserChange();
+        // check for user being undefined because you could land on this page before firebase does a check
+        if (this.user === null || isUndefined(this.user)) {
+          this.editMode = false;
+          this.showEditBtn = false;
+        } else {
+          if (this.aboutUser) {
+            console.log(this.user, this.aboutUser);
+            if (this.user.uid === this.aboutUser.uid) {
+              this.showEditBtn = true;
+            }
+          }
+        }
       }
     }
   }
@@ -66,6 +78,11 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
     if (this.editSubscription) {
       this.editSubscription.unsubscribe();
     }
+  }
+
+  private handleAboutUserChange(): void {
+    this.noImg = true;
+    this.handleProfilePic();
   }
 
   private handleProfilePic() {
@@ -78,8 +95,21 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  public enterEditMode() {
-    this.snackBar.open('Edit mode is not implemented yet :(', 'OK', {duration: 2000});
+  public editSaveBtn() {
+    if (this.editMode === true) {
+      // save info to firebase
+
+    } else {
+      // switch to edit mode
+    }
+
+    this.editMode = !this.editMode;
+    if (this.editMode === false) {
+      this.editBtnText = 'Edit';
+    } else {
+      this.editBtnText = 'Save';
+    }
+    this.snackBar.open('Edit mode is not implemented yet :(', 'OK', {duration: 1000});
   }
 
 }
