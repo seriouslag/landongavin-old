@@ -26,6 +26,10 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
 
   user: firebase.User;
 
+  bio: string;
+  company: string;
+  job: string;
+
   private editSubscription: Subscription;
   private userSubscription: Subscription;
 
@@ -64,7 +68,6 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
           this.showEditBtn = false;
         } else {
           if (this.aboutUser) {
-            console.log(this.user, this.aboutUser);
             if (this.user.uid === this.aboutUser.uid) {
               this.showEditBtn = true;
             }
@@ -78,6 +81,40 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
     if (this.editSubscription) {
       this.editSubscription.unsubscribe();
     }
+  }
+
+  public updateBio(bio: string) {
+    if(this.editMode === true && !isUndefined(bio)) {
+      this.bio = bio;
+      if (bio === this.aboutUser.bio && this.job === this.aboutUser.job && this.company === this.aboutUser.company) {
+        this.editBtnText = "Back";
+      } else {
+        this.editBtnText = "Save";
+      }
+    }
+  }
+
+  public updateJob(job: string) {
+    if(this.editMode === true && !isUndefined(job)) {
+      this.job = job;
+      if (this.bio === this.aboutUser.bio && job === this.aboutUser.job && this.company === this.aboutUser.company) {
+        this.editBtnText = "Back";
+      } else {
+        this.editBtnText = "Save";
+      }
+    }
+  }
+
+  public updateCompany(company: string) {
+    console.log(company);
+      if(this.editMode === true && !isUndefined(company)) {
+        this.company = company;
+        if (this.bio === this.aboutUser.bio && this.job === this.aboutUser.job && company === this.aboutUser.company) {
+          this.editBtnText = "Back";
+        } else {
+          this.editBtnText = "Save";
+        }
+      }
   }
 
   private handleAboutUserChange(): void {
@@ -95,21 +132,52 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
+  public submit() {
+    console.log('submit');
+    this.editSaveBtn();
+  }
+
   public editSaveBtn() {
     if (this.editMode === true) {
       // save info to firebase
+      let updateObject = {};
+      let update = false;
+      if(this.aboutUser.bio !== this.bio && !isUndefined(this.bio)) {
+        updateObject['bio'] = this.bio;
+        update = true;
+      }
+      if(this.aboutUser.job !== this.job && !isUndefined(this.job)) {
+        updateObject['job'] = this.job;
+        update = true;
+      }
+      if(this.aboutUser.company !== this.company && !isUndefined(this.company)) {
+        updateObject['company'] = this.company;
+        update = true;
+      }
+      if(update === true) {
+        console.log(update, updateObject);
+        this.firebaseService.updateUserInfo(updateObject).then(() => {
+          this.snackBar.open('Your profile has been updated.', 'OK', {duration: 1000});
+        }).catch(() => {
+          this.snackBar.open('Your profile failed to update.', 'OK', {duration: 1000});
+        });
+
+      }
 
     } else {
       // switch to edit mode
+      this.job = this.aboutUser.job;
+      this.company = this.aboutUser.company;
+      this.bio = this.aboutUser.bio;
     }
 
     this.editMode = !this.editMode;
     if (this.editMode === false) {
       this.editBtnText = 'Edit';
     } else {
-      this.editBtnText = 'Save';
+      this.editBtnText = 'Back';
     }
-    this.snackBar.open('Edit mode is not implemented yet :(', 'OK', {duration: 1000});
+
   }
 
 }
