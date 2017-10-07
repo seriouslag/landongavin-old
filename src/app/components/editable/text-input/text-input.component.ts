@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output,} from '@angular/core';
 
 @Component({
   selector: 'app-text-input',
@@ -22,9 +22,24 @@ export class TextInputComponent implements OnInit {
   @Input()
   maxlength: number;
 
+  @Output()
+  notify: EventEmitter<string> = new EventEmitter<string>();
+
+  @Output()
+  enter: EventEmitter<void> = new EventEmitter<void>();
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  public onInput(text: string): void {
+    this.notify.emit(text);
+  }
+
+  public onEnter(): void {
+    console.log('enter');
+    this.enter.emit();
   }
 
 }

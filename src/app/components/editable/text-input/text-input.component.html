@@ -4,12 +4,12 @@
 
 <md-input-container *ngIf="editMode === true && type === 'textarea'">
 
-  <textarea #input mdInput mdTextareaAutosize [mdAutosizeMaxRows]="15" placeholder="{{placeholder}}" [value]="text" [attr.maxlength]="maxlength"></textarea>
+  <textarea #input mdInput mdTextareaAutosize [mdAutosizeMaxRows]="15" placeholder="{{placeholder}}" (keyup.enter)="onEnter()" [ngModel]="text" (ngModelChange)="onInput($event)" [attr.maxlength]="maxlength"></textarea>
   <md-hint align="end">{{input.value.length}} / {{maxlength}}</md-hint>
 </md-input-container>
 
 <md-input-container *ngIf="editMode === true && type !== 'textarea'" class="smallInput">
 
-  <input #input mdInput placeholder="{{placeholder}}" [attr.maxlength]="maxlength" type="text" value="{{text}}">
+  <input #input mdInput placeholder="{{placeholder}}" [ngModel]="text" (ngModelChange)="onInput($event)" (keyup.enter)="onEnter()"  [attr.maxlength]="maxlength" type="text">
   <md-hint align="end">{{input.value.length}} / {{maxlength}}</md-hint>
 </md-input-container>
