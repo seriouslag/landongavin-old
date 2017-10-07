@@ -6,11 +6,6 @@
   height: 300px;
 }
 
-.blogImage {
-  max-height: 450px;
-  max-width: 450px;
-}
-
 .blogImageXSmall {
   max-height: 300px;
   max-width: 200px;
