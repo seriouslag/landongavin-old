@@ -38,7 +38,6 @@ export class TextInputComponent implements OnInit {
   }
 
   public onEnter(): void {
-    console.log('enter');
     this.enter.emit();
   }
 
