@@ -26,14 +26,26 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
 
   user: firebase.User;
 
-  bio: string;
-  company: string;
-  job: string;
+  userProperties = [
+    'bio',
+    'company',
+    'job',
+    'twitter',
+    'twitch',
+    'facebook',
+    'instagram',
+    'linkedin',
+    'youtube'
+  ];
 
   private editSubscription: Subscription;
   private userSubscription: Subscription;
 
-  constructor(private lgService: LgService, private firebaseService: FirebaseService, private snackBar: MdSnackBar) { }
+  constructor(private lgService: LgService, private firebaseService: FirebaseService, private snackBar: MdSnackBar) {
+    for (let property of this.userProperties) {
+      this[property] = '';
+    }
+  }
 
   ngOnInit() {
     this.editSubscription = this.lgService.editMode.subscribe(edit => {
@@ -69,6 +81,7 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
         } else {
           if (this.aboutUser) {
             if (this.user.uid === this.aboutUser.uid) {
+              this.editBtnText = 'Edit';
               this.showEditBtn = true;
             }
           }
@@ -83,38 +96,28 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  public updateBio(bio: string) {
-    if(this.editMode === true && !isUndefined(bio)) {
-      this.bio = bio;
-      if (bio === this.aboutUser.bio && this.job === this.aboutUser.job && this.company === this.aboutUser.company) {
-        this.editBtnText = "Back";
-      } else {
-        this.editBtnText = "Save";
+  private hasChanged(): boolean {
+    let changed = false;
+
+    for (let property of this.userProperties) {
+      if (this[property] !== this.aboutUser[property]) {
+        changed = true;
       }
     }
+
+    return changed;
   }
 
-  public updateJob(job: string) {
-    if(this.editMode === true && !isUndefined(job)) {
-      this.job = job;
-      if (this.bio === this.aboutUser.bio && job === this.aboutUser.job && this.company === this.aboutUser.company) {
-        this.editBtnText = "Back";
-      } else {
+  public updateUserProperties(property: string, event: string): void {
+    if(this.editMode === true && !isUndefined(event)) {
+
+      this[property] = event;
+      if (this.hasChanged()) {
         this.editBtnText = "Save";
+      } else {
+        this.editBtnText = "Back";
       }
     }
-  }
-
-  public updateCompany(company: string) {
-    console.log(company);
-      if(this.editMode === true && !isUndefined(company)) {
-        this.company = company;
-        if (this.bio === this.aboutUser.bio && this.job === this.aboutUser.job && company === this.aboutUser.company) {
-          this.editBtnText = "Back";
-        } else {
-          this.editBtnText = "Save";
-        }
-      }
   }
 
   private handleAboutUserChange(): void {
@@ -133,7 +136,6 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public submit() {
-    console.log('submit');
     this.editSaveBtn();
   }
 
@@ -142,18 +144,14 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
       // save info to firebase
       let updateObject = {};
       let update = false;
-      if(this.aboutUser.bio !== this.bio && !isUndefined(this.bio)) {
-        updateObject['bio'] = this.bio;
-        update = true;
+
+      for (let property of this.userProperties) {
+        if (this.aboutUser[property] !== this[property] && !isUndefined(this[property])) {
+          updateObject[property] = this[property];
+          update = true;
+        }
       }
-      if(this.aboutUser.job !== this.job && !isUndefined(this.job)) {
-        updateObject['job'] = this.job;
-        update = true;
-      }
-      if(this.aboutUser.company !== this.company && !isUndefined(this.company)) {
-        updateObject['company'] = this.company;
-        update = true;
-      }
+
       if(update === true) {
         console.log(update, updateObject);
         this.firebaseService.updateUserInfo(updateObject).then(() => {
@@ -166,9 +164,11 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
 
     } else {
       // switch to edit mode
-      this.job = this.aboutUser.job;
-      this.company = this.aboutUser.company;
-      this.bio = this.aboutUser.bio;
+
+      for (let property of this.userProperties) {
+        this[property] = this.aboutUser[property];
+      }
+
     }
 
     this.editMode = !this.editMode;
@@ -177,7 +177,6 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       this.editBtnText = 'Back';
     }
-
   }
 
 }
