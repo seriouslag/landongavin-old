@@ -1,0 +1,25 @@
+a {
+  color: black;
+}
+
+.nolink {
+  color: gray;
+}
+
+.editPanel {
+  position: absolute;
+  display: none;
+
+}
+
+.editPanelOpen {
+  display: block;
+}
+
+.check {
+  color: green;
+}
+
+.inputMenuItem {
+  padding: 0 10px;
+}

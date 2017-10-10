@@ -42,6 +42,7 @@ import { AboutComponent } from './components/about/about.component';
 import {LgService} from './services/lg.service';
 import { QuestionDialogComponent } from './components/dialogs/question-dialog/question-dialog.component';
 import { TextInputComponent } from './components/editable/text-input/text-input.component';
+import { SocialLinkComponent } from './components/editable/social-link/social-link.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { TextInputComponent } from './components/editable/text-input/text-input.
     MergeComponent,
     AboutComponent,
     QuestionDialogComponent,
-    TextInputComponent
+    TextInputComponent,
+    SocialLinkComponent
   ],
   imports: [
     BrowserModule,
