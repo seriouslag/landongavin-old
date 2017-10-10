@@ -8,65 +8,48 @@
         <md-input-container>
           <input mdInput placeholder="First Name" type="text" formControlName="firstname" value="{{lgUser?.fname}}">
           <md-hint
-            *ngIf="settingsForm.controls['firstname'].hasError('minlength') && settingsForm.controls['firstname'].touched"
-            class="errorHints">First Name must be longer than 2 characters.
+            *ngIf="settingsForm.controls['firstname'].hasError('minlength') && settingsForm.controls['firstname'].touched" class="errorHints">
+            First Name must be longer than 2 characters.
           </md-hint>
         </md-input-container>
         <md-input-container>
           <input mdInput placeholder="Last Name" type="text" formControlName="lastname" value="{{lgUser?.lname}}">
           <md-hint
-            *ngIf="settingsForm.controls['lastname'].hasError('minlength') && settingsForm.controls['lastname'].touched"
-            class="errorHints">Last Name must be longer than 2 characters.
+            *ngIf="settingsForm.controls['lastname'].hasError('minlength') && settingsForm.controls['lastname'].touched" class="errorHints">
+            Last Name must be longer than 2 characters.
           </md-hint>
         </md-input-container>
 
         <md-input-container>
           <input mdInput placeholder="Vanity" type="text" formControlName="vanity" value="{{lgUser?.vanity}}">
           <md-hint
-            *ngIf="settingsForm.controls['vanity'].hasError('minlength') && settingsForm.controls['vanity'].touched"
-            class="errorHints">Vanity must be between 3 and 30 characters long.
+            *ngIf="settingsForm.controls['vanity'].hasError('minlength')" class="errorHints">
+            Vanity must be longer than 3 characters in length.
           </md-hint>
           <md-hint
-            *ngIf="settingsForm.controls['vanity'].hasError('vanityInUse') && settingsForm.controls['vanity'].touched"
-            class="errorHints">This vanity is already in use.
+            *ngIf="settingsForm.controls['vanity'].hasError('maxlength')" class="errorHints">
+            Vanity must be shorter than 30 characters in length.
           </md-hint>
           <md-hint
-            *ngIf="settingsForm.controls['vanity'].hasError('vanity') && settingsForm.controls['vanity'].touched && !settingsForm.controls['vanity'].hasError('minlength') && !settingsForm.controls['vanity'].hasError('vanityInUse') && settingsForm.controls['vanity'].touched"
-            class="errorHints">Vanity must start with a letter and can only contain letters and numbers.
+            *ngIf="settingsForm.controls['vanity'].hasError('vanityInUse')" class="errorHints">
+            This vanity is already in use.
+          </md-hint>
+          <md-hint
+            *ngIf="settingsForm.controls['vanity'].hasError('vanity') && !settingsForm.controls['vanity'].hasError('minlength') && !settingsForm.controls['vanity'].hasError('vanityInUse')
+            && !settingsForm.controls['vanity'].hasError('maxlength')" class="errorHints">
+            Vanity must start with a letter and can only contain letters and numbers.
+          </md-hint>
+          <md-hint
+            *ngIf="!settingsForm.controls['vanity'].hasError('vanity') && !settingsForm.controls['vanity'].hasError('minlength') && !settingsForm.controls['vanity'].hasError('vanityInUse')
+            && !settingsForm.controls['vanity'].hasError('maxlength') && settingsForm.controls['vanity'].value !== lgUser.vanity" class="vanity">
+            This vanity is available to use.
+          </md-hint>
+          <md-hint
+            *ngIf="settingsForm.controls['vanity'].value === lgUser?.vanity && settingsForm.controls['vanity'].touched" class="vanity">
+            Your current vanity.
           </md-hint>
         </md-input-container>
 
-        <!--
-        <div fxLayout="column" fxLayoutGap="10px" formGroupName="matchingPassword">
-          <md-input-container>
-            <input mdInput placeholder="Change Password" type="password" formControlName="password">
-            <md-hint
-              *ngIf="matchingPassword.controls['password'].hasError('required') && matchingPassword.controls['password'].touched"
-              class="errorHints">A password is required.
-            </md-hint>
-            <md-hint
-              *ngIf="!matchingPassword.controls['password'].hasError('minlength') && !matchingPassword.controls['password'].hasError('required') && matchingPassword.controls['password'].touched && matchingPassword.controls['password'].hasError('pw')"
-              class="errorHints">Must contain at least 1 lowercase, 1 uppercase, 1 number, and 1 symbol of $@!%*?&( or )
-            </md-hint>
-            <md-hint
-              *ngIf="matchingPassword.controls['password'].hasError('minlength') && matchingPassword.controls['password'].touched && !matchingPassword.controls['password'].hasError('required')"
-              class="errorHints">The password must be at least 8 characters long.
-            </md-hint>
-          </md-input-container>
-
-          <md-input-container>
-            <input mdInput placeholder="Confirm Password" type="password" formControlName="cpassword">
-            <md-hint
-              *ngIf="matchingPassword.controls['cpassword'].hasError('required') && matchingPassword.controls['cpassword'].touched"
-              class="errorHints">This field is required.
-            </md-hint>
-            <md-hint
-              *ngIf="matchingPassword.controls['password'].touched && settingsForm.controls['matchingPassword'].hasError('mismatch') && !matchingPassword.controls['cpassword'].hasError('required')"
-              class="errorHints">Both passwords must match.
-            </md-hint>
-          </md-input-container>
-        </div>
-        -->
         <button md-button type="button" (click)="resetPassword()">Reset Password</button>
         <md-card-actions fxLayout="row" fxLayoutAlign="center center">
           <button md-button md-tooltip="Save" [mdTooltipShowDelay]="500" type="submit"
@@ -76,9 +59,8 @@
           </button>
         </md-card-actions>
 
-
-
       </form>
+
       <p *ngIf="user == null">
         <br>
         Please sign in to view this page.
