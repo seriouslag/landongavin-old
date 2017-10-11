@@ -1,6 +1,6 @@
 <md-card>
   <md-card-header  fxLayout="row">
-    <img md-card-avatar class="profile_image" src="{{aboutUserPic}}" *ngIf="noImg === false">
+    <app-profile-image md-card-avatar class="profile_image" [src]="aboutUser.image" [editMode]="editMode" *ngIf="noImg === false"></app-profile-image>
     <md-card-title>
       <div>
         {{aboutUser.fname}} {{aboutUser.lname}}
