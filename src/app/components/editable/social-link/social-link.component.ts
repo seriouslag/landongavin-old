@@ -1,6 +1,11 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {
+  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {MatMenuTrigger} from '@angular/material/menu';
+import {MediaChange, ObservableMedia} from '@angular/flex-layout';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-social-link',
@@ -27,7 +32,7 @@ import {MatMenuTrigger} from '@angular/material/menu';
     ]),
   ]
 })
-export class SocialLinkComponent implements OnInit, OnChanges {
+export class SocialLinkComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input()
   editMode = false;
@@ -47,10 +52,20 @@ export class SocialLinkComponent implements OnInit, OnChanges {
   styleClass = '';
   editPanelOpen = false;
 
-  constructor() { }
+  private mediaSubscription: Subscription;
+  mediaAlias: string;
+
+  constructor(private observableMedia: ObservableMedia) {
+    this.mediaSubscription = this.observableMedia.subscribe((mediaAlias: MediaChange) => {
+      this.mediaAlias = mediaAlias.mqAlias;
+    });
+  }
 
   ngOnInit() {
     this.setHREF(this.type);
+    if (this.observableMedia.isActive('xs')) {
+      this.mediaAlias = 'xs';
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -61,6 +76,12 @@ export class SocialLinkComponent implements OnInit, OnChanges {
       } else if (propName === 'link') {
         this.setHREF(this.type);
       }
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.mediaSubscription) {
+      this.mediaSubscription.unsubscribe();
     }
   }
 

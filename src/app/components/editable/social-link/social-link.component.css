@@ -23,3 +23,11 @@ a {
 .inputMenuItem {
   padding: 0 10px;
 }
+
+.smallInput {
+  max-width: 125px;
+}
+
+.smallButton {
+  min-width: 1%;
+}
