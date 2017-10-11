@@ -17,7 +17,6 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
   @Input()
   aboutUser: User;
 
-  aboutUserPic: string;
   noImg = true;
 
   editMode = false;
@@ -42,7 +41,7 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
   private userSubscription: Subscription;
 
   constructor(private lgService: LgService, private firebaseService: FirebaseService, private snackBar: MdSnackBar) {
-    for (let property of this.userProperties) {
+    for (const property of this.userProperties) {
       this[property] = '';
     }
   }
@@ -94,12 +93,15 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
     if (this.editSubscription) {
       this.editSubscription.unsubscribe();
     }
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 
   private hasChanged(): boolean {
     let changed = false;
 
-    for (let property of this.userProperties) {
+    for (const property of this.userProperties) {
       if (this[property] !== this.aboutUser[property]) {
         changed = true;
       }
@@ -109,28 +111,32 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public updateUserProperties(property: string, event: string): void {
-    if(this.editMode === true && !isUndefined(event)) {
+    if (this.editMode === true && !isUndefined(event)) {
 
       this[property] = event;
       if (this.hasChanged()) {
-        this.editBtnText = "Save";
+        this.editBtnText = 'Save';
       } else {
-        this.editBtnText = "Back";
+        this.editBtnText = 'Back';
       }
     }
   }
 
   private handleAboutUserChange(): void {
     this.noImg = true;
-    this.handleProfilePic();
+    if (this.aboutUser.image !== null || !isUndefined(this.aboutUser.image)) {
+      this.handleProfilePic();
+    }
+
   }
 
   private handleProfilePic() {
     this.firebaseService.getUserProfileImg(this.aboutUser.uid).then((url: string) => {
-      this.aboutUserPic = url;
+      this.aboutUser.image = url;
       this.noImg = false;
     }, () => {
       this.noImg = true;
+      this.aboutUser.image = '';
       console.log('FIREBASE STORAGE IMG NOT FOUND');
     });
   }
@@ -142,17 +148,17 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
   public editSaveBtn() {
     if (this.editMode === true) {
       // save info to firebase
-      let updateObject = {};
+      const updateObject = {};
       let update = false;
 
-      for (let property of this.userProperties) {
+      for (const property of this.userProperties) {
         if (this.aboutUser[property] !== this[property] && !isUndefined(this[property])) {
           updateObject[property] = this[property];
           update = true;
         }
       }
 
-      if(update === true) {
+      if (update === true) {
         console.log(update, updateObject);
         this.firebaseService.updateUserInfo(updateObject).then(() => {
           this.snackBar.open('Your profile has been updated.', 'OK', {duration: 1000});
@@ -165,7 +171,7 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       // switch to edit mode
 
-      for (let property of this.userProperties) {
+      for (const property of this.userProperties) {
         this[property] = this.aboutUser[property];
       }
 
