@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {animate, style, transition, trigger} from "@angular/animations";
-import {MatMenuTrigger} from "@angular/material/menu";
+import {animate, style, transition, trigger} from '@angular/animations';
+import {MatMenuTrigger} from '@angular/material/menu';
 
 @Component({
   selector: 'app-social-link',
@@ -30,7 +30,7 @@ import {MatMenuTrigger} from "@angular/material/menu";
 export class SocialLinkComponent implements OnInit, OnChanges {
 
   @Input()
-  editMode: boolean = false;
+  editMode = false;
 
   @Input()
   type: string;
@@ -45,7 +45,7 @@ export class SocialLinkComponent implements OnInit, OnChanges {
 
   href = '';
   styleClass = '';
-  editPanelOpen: boolean = false;
+  editPanelOpen = false;
 
   constructor() { }
 
@@ -58,7 +58,7 @@ export class SocialLinkComponent implements OnInit, OnChanges {
     for (const propName in changes) {
       if (propName === 'type') {
         this.setHREF(propName);
-      } else if(propName === 'link') {
+      } else if (propName === 'link') {
         this.setHREF(this.type);
       }
     }
@@ -99,7 +99,7 @@ export class SocialLinkComponent implements OnInit, OnChanges {
         break;
       }
     }
-    if(this.href && this.link) {
+    if (this.href && this.link) {
       this.href = this.href + this.link;
     } else {
       // invalid type :(
