@@ -57,6 +57,14 @@ export class FirebaseService {
               }
             }
           }
+          this.saveUserToDB(<User>{
+            email: tempUser.email, fname: tempUser.fname, lname: tempUser.lname,
+            bio: '', job: '', company: '', twitter: '',
+            facebook: '', instagram: '', twitch: '', youtube: '',
+            google: '', uid: tempUser.uid, linkedin: '', resumeLink: '',
+            vanity: tempUser.uid.toLowerCase(),
+            dateCreated: tempUser.dateCreated, image: '',
+          });
         }
       });
     });
@@ -100,7 +108,7 @@ export class FirebaseService {
           facebook: '', instagram: '', twitch: '', youtube: '',
           google: '', uid: response.uid, linkedin: '', resumeLink: '',
           vanity: response.uid.toLowerCase(),
-          dateCreated: Date.now().toString(),
+          dateCreated: Date.now().toString(), image: ''
         });
 
         this.setUserVanity(response.uid.toLowerCase());
