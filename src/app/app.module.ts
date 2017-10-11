@@ -43,6 +43,7 @@ import {LgService} from './services/lg.service';
 import { QuestionDialogComponent } from './components/dialogs/question-dialog/question-dialog.component';
 import { TextInputComponent } from './components/editable/text-input/text-input.component';
 import { SocialLinkComponent } from './components/editable/social-link/social-link.component';
+import { ProfileImageComponent } from './components/editable/profile-image/profile-image.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { SocialLinkComponent } from './components/editable/social-link/social-li
     AboutComponent,
     QuestionDialogComponent,
     TextInputComponent,
-    SocialLinkComponent
+    SocialLinkComponent,
+    ProfileImageComponent
   ],
   imports: [
     BrowserModule,
