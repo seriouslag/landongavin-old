@@ -58,7 +58,6 @@ export class SocialLinkComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private observableMedia: ObservableMedia) {
     this.mediaSubscription = this.observableMedia.subscribe((mediaAlias: MediaChange) => {
       this.mediaAlias = mediaAlias.mqAlias;
-      console.log(this.mediaAlias);
     });
   }
 

@@ -3,9 +3,9 @@ import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/form
 import {FirebaseService} from '../../services/firebase.service';
 import {User} from '../../interfaces/user';
 import {Subscription} from 'rxjs/Subscription';
-import {MdSnackBar} from '@angular/material/snack-bar';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {DialogService} from '../../services/dialog.service';
-import {MdDialogRef} from '@angular/material';
+import {MatDialogRef} from '@angular/material';
 import {QuestionDialogComponent} from '../../components/dialogs/question-dialog/question-dialog.component';
 
 @Component({
@@ -21,7 +21,7 @@ export class AccountPageComponent implements OnInit, OnDestroy {
   user: firebase.User;
   lgUser: User;
 
-  confirmDialog: MdDialogRef<QuestionDialogComponent>;
+  confirmDialog: MatDialogRef<QuestionDialogComponent>;
 
   settingsForm: FormGroup = new FormGroup({
     firstname: new FormControl(null, [Validators.minLength(2)]),
@@ -29,7 +29,7 @@ export class AccountPageComponent implements OnInit, OnDestroy {
     vanity: new FormControl(null, [Validators.minLength(3), Validators.maxLength(30), this.validateVanity],  [ this.vanityMatchValidator.bind(this)])
   });
 
-  constructor(private firebaseService: FirebaseService, private dialogService: DialogService, private snackBar: MdSnackBar) {
+  constructor(private firebaseService: FirebaseService, private dialogService: DialogService, private snackBar: MatSnackBar) {
     this.lgUser = {
       fname: 'First', lname: 'Last', email: '',
       bio: '', job: '', company: '',
@@ -79,10 +79,10 @@ export class AccountPageComponent implements OnInit, OnDestroy {
     const check = false;
     // should do check  on backend to see if request vanity is available but this works for now
     return new Promise(resolve => {
-      const req = this.firebaseService.getAllVanities();
+      const req = this.firebaseService.getAllVanities().snapshotChanges();
       req.take(1).subscribe(vanities => {
         for (const vanity of vanities) {
-          if (vanity['$key'] === vanityCheck && vanityCheck !== this.lgUser.vanity) {
+          if (vanity['key'] === vanityCheck && vanityCheck !== this.lgUser.vanity) {
             return resolve({vanityInUse: true});
           }
         }

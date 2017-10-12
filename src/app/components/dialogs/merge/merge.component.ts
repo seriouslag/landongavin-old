@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MdDialogRef, MdSnackBar} from '@angular/material';
+import {MatDialogRef, MatSnackBar} from '@angular/material';
 import {FirebaseService} from '../../../services/firebase.service';
 
 @Component({
@@ -13,7 +13,7 @@ export class MergeComponent implements OnInit {
   firebaseService: FirebaseService;
   message: string;
 
-  constructor(public mergeDialog: MdDialogRef<MergeComponent>, private snackBar: MdSnackBar) { }
+  constructor(public mergeDialog: MatDialogRef<MergeComponent>, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.firebaseService.fetchProvidersForEmail(this.email.toLowerCase())

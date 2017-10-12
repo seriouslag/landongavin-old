@@ -1,16 +1,16 @@
-<h1 md-dialog-title>Merge Accounts?</h1>
+<h1 mat-dialog-title>Merge Accounts?</h1>
 <p>
   {{message}}
 </p>
 <p>
   Would you like to merge accounts?
 </p>
-<button md-button md-tooltip="Cancel" [mdTooltipShowDelay]="500" color="primary" (click)="cancel()"
+<button mat-button matTooltip="Cancel" [matTooltipShowDelay]="500" color="primary" (click)="cancel()"
         class="cancel">
-  <md-icon>close</md-icon>
+  <mat-icon>close</mat-icon>
   <span >Cancel</span>
 </button>
-<button md-button md-tooltip="Confirm" [mdTooltipShowDelay]="500" (click)="confirm()" class="confirm">
-  <md-icon>check</md-icon>
+<button mat-button matTooltip="Confirm" [matTooltipShowDelay]="500" (click)="confirm()" class="confirm">
+  <mat-icon>check</mat-icon>
   <span>Merge</span>
 </button>

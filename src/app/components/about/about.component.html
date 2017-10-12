@@ -1,25 +1,25 @@
-<md-card>
-  <md-card-header  fxLayout="row">
-    <app-profile-image md-card-avatar class="profile_image" [src]="aboutUser.image" [editMode]="editMode" *ngIf="noImg === false"></app-profile-image>
-    <md-card-title>
+<mat-card>
+  <mat-card-header  fxLayout="row">
+    <app-profile-image mat-card-avatar class="profile_image" [src]="aboutUser.image" [editMode]="editMode" *ngIf="noImg === false"></app-profile-image>
+    <mat-card-title>
       <div>
         {{aboutUser.fname}} {{aboutUser.lname}}
       </div>
-    </md-card-title>
+    </mat-card-title>
     <div fxFlex></div>
     <div *ngIf="showEditBtn === true">
-      <button md-button (click)="editSaveBtn()">{{editBtnText}}</button>
+      <button mat-button (click)="editSaveBtn()">{{editBtnText}}</button>
     </div>
-    <md-card-subtitle>
+    <mat-card-subtitle>
 
       <app-text-input #job [editMode]="editMode" [type]="'text'" [text]="aboutUser.job" [placeholder]="'Job'" [maxlength]="20" (value)="job" (notify)="updateUserProperties('job', $event)" (enter)="submit()"></app-text-input>
       <span *ngIf="aboutUser.company"> @ </span>
       <app-text-input #company [editMode]="editMode" [type]="'text'" [text]="aboutUser.company" [placeholder]="'Company'" [maxlength]="20" (value)="company" (notify)="updateUserProperties('company', $event)" (enter)="submit()"></app-text-input>
 
-    </md-card-subtitle>
-  </md-card-header>
+    </mat-card-subtitle>
+  </mat-card-header>
 
-  <md-card-content>
+  <mat-card-content>
     <div fxLayout="row" fxLayoutGap="10px">
       <div fxFlex>
         <span *ngIf="editMode === false">Bio:</span>
@@ -32,12 +32,12 @@
       </div>
 
       <div>
-        <a *ngIf="aboutUser.resumeLink" href="{{aboutUser.resumeLink}}"><button md-raised-button>Résumé</button></a>
+        <a *ngIf="aboutUser.resumeLink" href="{{aboutUser.resumeLink}}"><button mat-raised-button>Résumé</button></a>
       </div>
     </div>
 
-  </md-card-content>
-  <md-card-actions>
+  </mat-card-content>
+  <mat-card-actions>
 
     <div fxLayout="row" fxLayoutAlign="space-around center">
       <app-social-link [editMode]="editMode" type="instagram" [link]="aboutUser.instagram" (notify)="updateUserProperties('instagram', $event)"></app-social-link>
@@ -50,5 +50,5 @@
     <div *ngIf="editMode === true">
       Click to add or edit social links
     </div>
-  </md-card-actions>
-</md-card>
+  </mat-card-actions>
+</mat-card>

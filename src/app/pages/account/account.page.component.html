@@ -1,63 +1,63 @@
 <div fxFlexFill fxLayout="column" fxLayoutAlign="center center">
-  <md-card>
-    <md-card-header>
+  <mat-card>
+    <mat-card-header>
       Account Settings
-    </md-card-header>
-    <md-card-content>
+    </mat-card-header>
+    <mat-card-content>
       <form fxLayout="column" fxLayoutGap="10px" [formGroup]="settingsForm" novalidate (submit)="saveUserInfo()" *ngIf="lgUser && user">
-        <md-input-container>
-          <input mdInput placeholder="First Name" type="text" formControlName="firstname" value="{{lgUser?.fname}}">
-          <md-hint
+        <mat-input-container>
+          <input matInput placeholder="First Name" type="text" formControlName="firstname" value="{{lgUser?.fname}}">
+          <mat-hint
             *ngIf="settingsForm.controls['firstname'].hasError('minlength') && settingsForm.controls['firstname'].touched" class="errorHints">
             First Name must be longer than 2 characters.
-          </md-hint>
-        </md-input-container>
-        <md-input-container>
-          <input mdInput placeholder="Last Name" type="text" formControlName="lastname" value="{{lgUser?.lname}}">
-          <md-hint
+          </mat-hint>
+        </mat-input-container>
+        <mat-input-container>
+          <input matInput placeholder="Last Name" type="text" formControlName="lastname" value="{{lgUser?.lname}}">
+          <mat-hint
             *ngIf="settingsForm.controls['lastname'].hasError('minlength') && settingsForm.controls['lastname'].touched" class="errorHints">
             Last Name must be longer than 2 characters.
-          </md-hint>
-        </md-input-container>
+          </mat-hint>
+        </mat-input-container>
 
-        <md-input-container>
-          <input mdInput placeholder="Vanity" type="text" formControlName="vanity" value="{{lgUser?.vanity}}">
-          <md-hint
+        <mat-input-container>
+          <input matInput placeholder="Vanity" type="text" formControlName="vanity" value="{{lgUser?.vanity}}">
+          <mat-hint
             *ngIf="settingsForm.controls['vanity'].hasError('minlength')" class="errorHints">
             Vanity must be longer than 3 characters in length.
-          </md-hint>
-          <md-hint
+          </mat-hint>
+          <mat-hint
             *ngIf="settingsForm.controls['vanity'].hasError('maxlength')" class="errorHints">
             Vanity must be shorter than 30 characters in length.
-          </md-hint>
-          <md-hint
+          </mat-hint>
+          <mat-hint
             *ngIf="settingsForm.controls['vanity'].hasError('vanityInUse')" class="errorHints">
             This vanity is already in use.
-          </md-hint>
-          <md-hint
+          </mat-hint>
+          <mat-hint
             *ngIf="settingsForm.controls['vanity'].hasError('vanity') && !settingsForm.controls['vanity'].hasError('minlength') && !settingsForm.controls['vanity'].hasError('vanityInUse')
             && !settingsForm.controls['vanity'].hasError('maxlength')" class="errorHints">
             Vanity must start with a letter and can only contain letters and numbers.
-          </md-hint>
-          <md-hint
+          </mat-hint>
+          <mat-hint
             *ngIf="!settingsForm.controls['vanity'].hasError('vanity') && !settingsForm.controls['vanity'].hasError('minlength') && !settingsForm.controls['vanity'].hasError('vanityInUse')
             && !settingsForm.controls['vanity'].hasError('maxlength') && settingsForm.controls['vanity'].value !== lgUser.vanity" class="vanity">
             This vanity is available to use.
-          </md-hint>
-          <md-hint
+          </mat-hint>
+          <mat-hint
             *ngIf="settingsForm.controls['vanity'].value === lgUser?.vanity && settingsForm.controls['vanity'].touched" class="vanity">
             Your current vanity.
-          </md-hint>
-        </md-input-container>
+          </mat-hint>
+        </mat-input-container>
 
-        <button md-button type="button" (click)="resetPassword()">Reset Password</button>
-        <md-card-actions fxLayout="row" fxLayoutAlign="center center">
-          <button md-button md-tooltip="Save" [mdTooltipShowDelay]="500" type="submit"
+        <button mat-button type="button" (click)="resetPassword()">Reset Password</button>
+        <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+          <button mat-button matTooltip="Save" [matTooltipShowDelay]="500" type="submit"
                   [disabled]="(settingsForm.controls['firstname'].value === lgUser.fname || settingsForm.controls['firstname'].value === '')
                   && (settingsForm.controls['lastname'].value === lgUser.lname || settingsForm.controls['lastname'].value === '')
                   && (settingsForm.controls['vanity'].value === lgUser.vanity || settingsForm.controls['vanity'].value === '') || settingsForm.invalid">Save
           </button>
-        </md-card-actions>
+        </mat-card-actions>
 
       </form>
 
@@ -65,6 +65,6 @@
         <br>
         Please sign in to view this page.
       </p>
-    </md-card-content>
-  </md-card>
+    </mat-card-content>
+  </mat-card>
 </div>

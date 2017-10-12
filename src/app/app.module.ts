@@ -4,17 +4,12 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './pages/home/home.page.component';
 import {
-  MdAutocompleteModule, MdButtonModule,
-  MdButtonToggleModule, MdCardModule, MdCheckboxModule, MdChipsModule, MdDialogModule, MdExpansionModule, MdIconModule,
-  MdInputModule,
-  MdLineModule,
-  MdListModule, MdMenuModule,
-  MdOptionModule,
-  MdProgressBarModule,
-  MdProgressSpinnerModule,
-  MdRadioModule, MdRippleModule, MdSelectModule, MdSidenavModule, MdSliderModule, MdSlideToggleModule,
-  MdSnackBarModule, MdSortModule, MdStepperModule, MdTabsModule, MdToolbarModule, MdTooltipModule, MdPaginatorModule,
-  MdDatepickerModule,
+  MatAutocompleteModule, MatButtonModule,
+  MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDialogModule, MatExpansionModule, MatIconModule,
+  MatInputModule, MatLineModule, MatListModule, MatMenuModule, MatOptionModule, MatProgressBarModule, MatProgressSpinnerModule,
+  MatRadioModule, MatRippleModule, MatSelectModule, MatSidenavModule, MatSliderModule, MatSlideToggleModule,
+  MatSnackBarModule, MatSortModule, MatStepperModule, MatTabsModule, MatToolbarModule, MatTooltipModule, MatPaginatorModule,
+  MatDatepickerModule,
 } from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -75,12 +70,12 @@ import { ProfileImageComponent } from './components/editable/profile-image/profi
     AngularFireDatabaseModule, // imports firebase/database, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features
     Angulartics2Module.forRoot([ Angulartics2GoogleTagManager ]),
-    MdButtonModule, MdMenuModule, MdToolbarModule, MdInputModule, MdSidenavModule, MdIconModule, MdTabsModule,
-    MdChipsModule, MdTooltipModule, MdCardModule, MdCheckboxModule, MdDialogModule,
-    MdOptionModule, MdLineModule, MdListModule, MdProgressBarModule, MdProgressSpinnerModule, MdAutocompleteModule,
-    MdButtonToggleModule, MdRadioModule, MdRippleModule, MdSelectModule, MdSliderModule,
-    MdSlideToggleModule, MdSnackBarModule, MdExpansionModule, MdStepperModule, MdPaginatorModule, MdTabsModule, MdSortModule,
-    MdDatepickerModule
+    MatAutocompleteModule, MatButtonModule,
+    MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDialogModule, MatExpansionModule, MatIconModule,
+    MatInputModule, MatLineModule, MatListModule, MatMenuModule, MatOptionModule, MatProgressBarModule, MatProgressSpinnerModule,
+    MatRadioModule, MatRippleModule, MatSelectModule, MatSidenavModule, MatSliderModule, MatSlideToggleModule,
+    MatSnackBarModule, MatSortModule, MatStepperModule, MatTabsModule, MatToolbarModule, MatTooltipModule, MatPaginatorModule,
+    MatDatepickerModule,
   ],
   exports: [FormsModule, ReactiveFormsModule],
   providers: [FirebaseService, DialogService, LgService],

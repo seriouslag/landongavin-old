@@ -1,36 +1,36 @@
-<md-accordion #login_component>
-  <md-expansion-panel (opened)="loginOpened()" [expanded]="closedLogin">
-    <md-expansion-panel-header>
-      <md-panel-title>
+<mat-accordion #login_component>
+  <mat-expansion-panel (opened)="loginOpened()" [expanded]="closedLogin">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
         {{title}}
-      </md-panel-title>
-    </md-expansion-panel-header>
-    <div  *ngIf="!create">
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div  *ngIf="create !== true">
       <form [formGroup]="loginForm" novalidate (submit)="loginWithEmail()">
-        <md-form-field>
-          <input mdInput placeholder="Email" type="email" formControlName="email">
-          <md-hint class="errorHints"
+        <mat-form-field>
+          <input matInput placeholder="Email" type="email" formControlName="email">
+          <mat-hint class="errorHints"
                    *ngIf="loginForm.controls['email'].touched && loginForm.controls['email'].hasError('email') && !loginForm.controls['email'].hasError('required')">
             Email is invalid.
-          </md-hint>
-          <md-hint class="errorHints"
+          </mat-hint>
+          <mat-hint class="errorHints"
                    *ngIf="loginForm.controls['email'].touched  && loginForm.controls['email'].hasError('required')">An
             email is required to login.
-          </md-hint>
-        </md-form-field>
+          </mat-hint>
+        </mat-form-field>
 
-        <md-form-field>
-          <input mdInput placeholder="Password" type="password" formControlName="password">
-          <md-hint class="errorHints"
+        <mat-form-field>
+          <input matInput placeholder="Password" type="password" formControlName="password">
+          <mat-hint class="errorHints"
                    *ngIf="loginForm.controls['password'].touched  && loginForm.controls['password'].hasError('required')">
             Your password is required to login.
-          </md-hint>
-        </md-form-field>
+          </mat-hint>
+        </mat-form-field>
         <div fxLayout="row" fxLayoutAlign="space-around center">
-          <button md-button (click)="loginWithEmail()" [disabled]="loginForm.invalid">
+          <button mat-button (click)="loginWithEmail()" [disabled]="loginForm.invalid">
             Login
           </button>
-          <button md-button md-tooltip="Login with Google" type="button" [mdTooltipShowDelay]="500" (click)="loginWithGoogle()">
+          <button mat-button mat-tooltip="Login with Google" type="button" [matTooltipShowDelay]="500" (click)="loginWithGoogle()">
               <span fxLayout="row" fxLayoutAlign="center center">
                 <span>Sign In with</span>
                 <span fxFlex="5px"></span>
@@ -45,114 +45,114 @@
     </div>
 
     <form fxLayout="column" fxLayoutGap="10px" [formGroup]="accountForm" *ngIf="create" novalidate (submit)="createUserLogin()">
-      <md-input-container>
-        <input mdInput placeholder="First Name" type="text" formControlName="firstname" required autocomplete="fname">
-        <md-hint
+      <mat-input-container>
+        <input matInput placeholder="First Name" type="text" formControlName="firstname" required autocomplete="fname">
+        <mat-hint
           *ngIf="accountForm.controls['firstname'].hasError('required') && accountForm.controls['firstname'].touched"
           class="errorHints">A first name is required.
-        </md-hint>
-        <md-hint
+        </mat-hint>
+        <mat-hint
           *ngIf="accountForm.controls['firstname'].hasError('minlength') && accountForm.controls['firstname'].touched"
           class="errorHints">First Name must be longer than 2 characters.
-        </md-hint>
-      </md-input-container>
-      <md-input-container>
-        <input mdInput placeholder="Last Name" type="text" formControlName="lastname" required autocomplete="lname">
-        <md-hint
+        </mat-hint>
+      </mat-input-container>
+      <mat-input-container>
+        <input matInput placeholder="Last Name" type="text" formControlName="lastname" required autocomplete="lname">
+        <mat-hint
           *ngIf="accountForm.controls['lastname'].hasError('required') && accountForm.controls['lastname'].touched"
           class="errorHints">A last name is required.
-        </md-hint>
-        <md-hint
+        </mat-hint>
+        <mat-hint
           *ngIf="accountForm.controls['lastname'].hasError('minlength') && accountForm.controls['lastname'].touched"
           class="errorHints">Last Name must be longer than 2 characters.
-        </md-hint>
-      </md-input-container>
+        </mat-hint>
+      </mat-input-container>
       <div fxLayout="column" fxLayoutGap="10px" formGroupName="matchingEmail">
-        <md-input-container>
-          <input mdInput placeholder="Email" type="email" formControlName="email" required autocomplete="email">
-          <md-hint
+        <mat-input-container>
+          <input matInput placeholder="Email" type="email" formControlName="email" required autocomplete="email">
+          <mat-hint
             *ngIf="matchingEmail.controls['email'].hasError('required') && matchingEmail.controls['email'].touched && !matchingEmail.controls['email'].hasError('email')"
             class="errorHints">An email is required.
-          </md-hint>
-          <md-hint *ngIf="matchingEmail.controls['email'].touched && matchingEmail.controls['email'].hasError('email')"
+          </mat-hint>
+          <mat-hint *ngIf="matchingEmail.controls['email'].touched && matchingEmail.controls['email'].hasError('email')"
                    class="errorHints">This is not a valid email.
-          </md-hint>
-        </md-input-container>
+          </mat-hint>
+        </mat-input-container>
 
-        <md-input-container>
-          <input mdInput placeholder="Confirm Email" type="email" formControlName="cemail" required autocomplete="email">
+        <mat-input-container>
+          <input matInput placeholder="Confirm Email" type="email" formControlName="cemail" required autocomplete="email">
 
-          <md-hint
+          <mat-hint
             *ngIf="matchingEmail.controls['cemail'].hasError('required') && matchingEmail.controls['cemail'].touched"
             class="errorHints">Must confirm email
-          </md-hint>
-          <md-hint
+          </mat-hint>
+          <mat-hint
             *ngIf="!matchingEmail.controls['cemail'].hasError('required') && matchingEmail.controls['email'].touched && accountForm.controls['matchingEmail'].hasError('mismatch')"
             class="errorHints">Emails must match
-          </md-hint>
+          </mat-hint>
 
-        </md-input-container>
+        </mat-input-container>
       </div>
       <div fxLayout="column" fxLayoutGap="10px" formGroupName="matchingPassword">
-        <md-input-container>
-          <input mdInput placeholder="Password" type="password" formControlName="password" required autocomplete="password">
-          <md-hint
+        <mat-input-container>
+          <input matInput placeholder="Password" type="password" formControlName="password" required autocomplete="password">
+          <mat-hint
             *ngIf="matchingPassword.controls['password'].hasError('required') && matchingPassword.controls['password'].touched"
             class="errorHints">A password is required.
-          </md-hint>
-          <!--<md-hint
+          </mat-hint>
+          <!--<mat-hint
             *ngIf="!matchingPassword.controls['password'].hasError('minlength') && !matchingPassword.controls['password'].hasError('required') && matchingPassword.controls['password'].touched && matchingPassword.controls['password'].hasError('pw')"
             class="errorHints">Must contain 1 lowercase, 1 uppercase, 1 number, and 1 symbol of $@!%*?&( or )
-          </md-hint>-->
-          <md-hint
+          </mat-hint>-->
+          <mat-hint
             *ngIf="!matchingPassword.controls['password'].hasError('minlength') && !matchingPassword.controls['password'].hasError('maxlength') && !matchingPassword.controls['password'].hasError('required') && matchingPassword.controls['password'].touched && matchingPassword.controls['password'].hasError('pw')"
             class="errorHints">This is not a valid password.
-          </md-hint>
-          <md-hint
+          </mat-hint>
+          <mat-hint
             *ngIf="matchingPassword.controls['password'].hasError('maxlength') && matchingPassword.controls['password'].touched && !matchingPassword.controls['password'].hasError('required')"
             class="errorHints">The password must be at least 8 characters long.
-          </md-hint>
-          <md-hint
+          </mat-hint>
+          <mat-hint
             *ngIf="matchingPassword.controls['password'].hasError('minlength') && matchingPassword.controls['password'].touched && !matchingPassword.controls['password'].hasError('required')"
             class="errorHints">The password must be at least 8 characters long.
-          </md-hint>
-        </md-input-container>
+          </mat-hint>
+        </mat-input-container>
 
-        <md-input-container>
-          <input mdInput placeholder="Confirm Password" type="password" formControlName="cpassword" required autocomplete="password">
-          <md-hint
+        <mat-input-container>
+          <input matInput placeholder="Confirm Password" type="password" formControlName="cpassword" required autocomplete="password">
+          <mat-hint
             *ngIf="matchingPassword.controls['cpassword'].hasError('required') && matchingPassword.controls['cpassword'].touched"
             class="errorHints">This field is required.
-          </md-hint>
-          <md-hint
+          </mat-hint>
+          <mat-hint
             *ngIf="matchingPassword.controls['password'].touched && accountForm.controls['matchingPassword'].hasError('mismatch') && !matchingPassword.controls['cpassword'].hasError('required')"
             class="errorHints">Both passwords must match.
-          </md-hint>
-        </md-input-container>
+          </mat-hint>
+        </mat-input-container>
       </div>
       <div fxLayout="row" class="required">
         <div fxFlex></div>
         <div>*all fields are required</div>
       </div>
 
-      <md-action-row>
-        <div fxLayout="row" fxFlexFill>
-          <button md-button type="button" (click)="toLogin()" md-tooltip="Back to Login" [mdTooltipShowDelay]="500">Back</button>
-          <button md-button md-tooltip="Create account" [mdTooltipShowDelay]="500" type="submit"
+      <mat-action-row>
+        <div fxLayout="row">
+          <button mat-button type="button" (click)="toLogin()" matTooltip="Back to Login" [matTooltipShowDelay]="500">Back</button>
+          <button mat-button matTooltip="Create account" [matTooltipShowDelay]="500" type="submit"
                   [disabled]="accountForm.invalid">Create
           </button>
         </div>
-      </md-action-row>
+      </mat-action-row>
     </form>
 
-    <md-action-row *ngIf="!create">
+    <mat-action-row *ngIf="!create">
       <div fxLayout="row" fxFlexFill>
-        <button md-button (click)="closeLogin()" md-tooltip="Cancel Login" [mdTooltipShowDelay]="500">Cancel</button>
+        <button mat-button (click)="closeLogin()" matTooltip="Cancel Login" [matTooltipShowDelay]="500">Cancel</button>
 
-        <button (click)="toCreateAccount()" class="create_button" md-button md-tooltip="Create an account" [mdTooltipShowDelay]="500">
+        <button (click)="toCreateAccount()" class="create_button" mat-button matTooltip="Create an account" [matTooltipShowDelay]="500">
           Create
         </button>
       </div>
-    </md-action-row>
-  </md-expansion-panel>
-</md-accordion>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>

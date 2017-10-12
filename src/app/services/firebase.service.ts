@@ -1,5 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
-import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database';
+import {
+  AngularFireDatabase, AngularFireList, AngularFireObject,
+} from 'angularfire2/database';
 import {AngularFireAuth} from 'angularfire2/auth';
 
 import {Card} from '../interfaces/card';
@@ -7,7 +9,7 @@ import {Observable} from 'rxjs/Observable';
 
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
-import {MdSnackBar, MdDialogRef} from '@angular/material';
+import {MatSnackBar, MatDialogRef} from '@angular/material';
 import {User} from '../interfaces/user';
 import {FirebaseApp} from 'angularfire2';
 import {DialogService} from './dialog.service';
@@ -21,23 +23,23 @@ export class FirebaseService {
   public storage: any;
   public storageRef: any;
 
-  mergeDialog: MdDialogRef<MergeComponent>;
+  mergeDialog: MatDialogRef<MergeComponent>;
 
   constructor(@Inject(FirebaseApp) firebaseApp: any, private db: AngularFireDatabase,
-              private auth: AngularFireAuth, private snackBar: MdSnackBar, private dialogService: DialogService) {
+              private auth: AngularFireAuth, private snackBar: MatSnackBar, private dialogService: DialogService) {
     this.user = auth.authState;
     auth.auth.setPersistence('local');
     this.storage = firebaseApp.storage();
     this.storageRef = this.storage.ref();
   }
 
-  public getBlogPostsFromFB(): FirebaseListObservable<Card[]> {
-    return this.db.list('/blog');
+  public getBlogPostsFromFB(): Observable<Card[]> {
+    return this.db.list<Card[]>('/blog').valueChanges();
   }
 
   public loginWithGoogleProvider(): void {
     this.auth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then((user: firebase.User) => {
-      this.db.object('/users/' + user.uid).take(1).subscribe(lgUser => {
+      this.db.object('/users/' + user.uid).valueChanges().take(1).subscribe(lgUser => {
         if (lgUser == null) {
           const tempUser: User = <User>{};
           tempUser.dateCreated = Date.now().toString();
@@ -70,7 +72,7 @@ export class FirebaseService {
     });
   }
 
-  public loginWithEmailProvider(email: string, password: string): firebase.Promise<firebase.User> {
+  public loginWithEmailProvider(email: string, password: string): Promise<any> {
     return this.auth.auth.signInWithEmailAndPassword(email, password).then(() => {
       }).catch((error: any) => {
         const errorCode = error.code;
@@ -95,11 +97,11 @@ export class FirebaseService {
     });
   }
 
-  public saveUserToDB(lgUser: User): firebase.Promise<void> {
+  public saveUserToDB(lgUser: User): Promise<void> {
     return this.db.object('users/' + lgUser.uid).set(lgUser);
   }
 
-  public createUserFromEmail(email: string, password: string, fname: string, lname: string): firebase.Promise<firebase.User> {
+  public createUserFromEmail(email: string, password: string, fname: string, lname: string): Promise<any> {
     return this.auth.auth.createUserWithEmailAndPassword(email, password).then((response) => {
 
         this.saveUserToDB(<User>{
@@ -143,28 +145,28 @@ export class FirebaseService {
 
   }
 
-  public fetchProvidersForEmail(email: string): firebase.Promise<string[]> {
+  public fetchProvidersForEmail(email: string): Promise<string[]> {
     return this.auth.auth.fetchProvidersForEmail(email);
   }
 
-  public sendPasswordResetEmail(email: string, actionCodeSettings: any): firebase.Promise<void> {
+  public sendPasswordResetEmail(email: string, actionCodeSettings: any): Promise<void> {
     return this.auth.auth.sendPasswordResetEmail(email, actionCodeSettings);
   }
 
-  public getUIDByVanity(vanity: string): FirebaseObjectObservable<any> {
-    return this.db.object('/vanities/' + vanity, { preserveSnapshot: true });
+  public getUIDByVanity(vanity: string): Observable<any> {
+    return this.db.object('/vanities/' + vanity).valueChanges();
   }
 
-  public getLGUserByUID(uid: string): FirebaseObjectObservable<User> {
-    return this.db.object('/users/' + uid);
+  public getLGUserByUID(uid: string): Observable<User> {
+    return this.db.object('/users/' + uid).valueChanges();
   }
 
-  public getUserProfileImg(uid: string): firebase.Promise<string> {
+  public getUserProfileImg(uid: string): Promise<string> {
     return this.storageRef.child('users/' + uid + '/profile.jpg').getDownloadURL();
   }
 
   // Use until backend is setup
-  public getAllVanities(): FirebaseListObservable<any> {
+  public getAllVanities(): AngularFireList<any> {
     return this.db.list('/vanities');
   }
 
@@ -185,7 +187,7 @@ export class FirebaseService {
     });
   }
 
-  public updateUserInfo(updateObject: any): firebase.Promise<any> {
+  public updateUserInfo(updateObject: any): Promise<any> {
     return this.db.object('/users/' + this.auth.auth.currentUser.uid).update(updateObject);
   }
 }

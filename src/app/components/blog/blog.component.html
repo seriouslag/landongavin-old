@@ -1,13 +1,13 @@
 <div fxLayout="row" fxLayoutAlign="center center">
   <div fxFlex></div>
   <div fxLayout="column" fxLayoutGap="10px" >
-    <md-card *ngFor="let blog of blogList" class="blogPost">
-      <md-card-title>
+    <mat-card *ngFor="let blog of blogList" class="blogPost">
+      <mat-card-title>
         {{blog.title}}
-      </md-card-title>
-      <md-card-subtitle>
+      </mat-card-title>
+      <mat-card-subtitle>
         {{blog.subtitle}}
-      </md-card-subtitle>
+      </mat-card-subtitle>
       <div fxLayout="row" fxLayoutAlign="centet center">
         <div fxFlex></div>
         <div class="videoContainer" *ngIf="blog.hasVideo">
@@ -20,23 +20,23 @@
         >
         <div fxFlex></div>
       </div>
-      <md-card-content>
+      <mat-card-content>
         {{blog.content}}
-      </md-card-content>
-      <md-card-footer>
+      </mat-card-content>
+      <mat-card-footer>
         {{blog.footer}}
-      </md-card-footer>
-    </md-card>
+      </mat-card-footer>
+    </mat-card>
   </div>
 
-  <md-card *ngIf="waiting === true || failed === true">
-    <md-spinner *ngIf="waiting === true && failed === false"></md-spinner>
-    <md-card-content *ngIf="waiting === false && failed === true">
+  <mat-card *ngIf="waiting === true || failed === true">
+    <mat-spinner *ngIf="waiting === true && failed === false"></mat-spinner>
+    <mat-card-content *ngIf="waiting === false && failed === true">
       User was not found.
       <br>
       <button md-button routerLink="/home" color="primary">Home</button>
-    </md-card-content>
+    </mat-card-content>
 
-  </md-card>
+  </mat-card>
   <div fxFlex></div>
 </div>

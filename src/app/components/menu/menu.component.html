@@ -1,32 +1,32 @@
-<button md-raised-button [mdMenuTriggerFor]="menu" class="menu">
-  <md-icon>more_vert</md-icon>
+<button mat-raised-button [matMenuTriggerFor]="menu" class="menu">
+  <mat-icon>more_vert</mat-icon>
 </button>
 
-<md-menu #menu="mdMenu">
-  <button md-menu-item routerLink="/home">
-    <md-icon>home</md-icon>
+<mat-menu #menu="matMenu">
+  <a mat-menu-item routerLink="/home">
+    <mat-icon>home</mat-icon>
     <span>Home</span>
-  </button>
-  <button md-menu-item routerLink="/about">
-    <md-icon>sentiment_neutral</md-icon>
+  </a>
+  <a mat-menu-item routerLink="/about">
+    <mat-icon>sentiment_neutral</mat-icon>
     <span>About</span>
-  </button>
-  <button md-menu-item [mdMenuTriggerFor]="projectMenu">
-    <md-icon>extension</md-icon>
+  </a>
+  <button mat-menu-item [matMenuTriggerFor]="projectMenu">
+    <mat-icon>extension</mat-icon>
     <span>Projects</span>
   </button>
-  <button md-menu-item [mdMenuTriggerFor]="mediaMenu">
-    <md-icon>video_library</md-icon>
+  <button mat-menu-item [matMenuTriggerFor]="mediaMenu">
+    <mat-icon>video_library</mat-icon>
     <span>Media</span>
   </button>
 
-</md-menu>
+</mat-menu>
 
-<md-menu #projectMenu="mdMenu">
-  <a href="http://www.chiefsretro.com" target="_blank"> <button md-menu-item>Chiefsretro.com</button></a>
-</md-menu>
+<mat-menu #projectMenu="matMenu">
+  <a href="http://www.chiefsretro.com" target="_blank" mat-menu-item>Chiefsretro.com</a>
+</mat-menu>
 
-<md-menu #mediaMenu="mdMenu">
-  <a href="http://www.seriouslag.com:32400/" target="_blank" rel="nofollow noreferrer noopener"><button md-menu-item>Plex</button></a>
-  <a href="http://www.seriouslag.com:9001/" target="_blank" rel="nofollow noreferrer noopener"><button md-menu-item>QBT</button></a>
-</md-menu>
+<mat-menu #mediaMenu="matMenu">
+  <a href="http://www.seriouslag.com:32400/" target="_blank" rel="nofollow noreferrer noopener" mat-menu-item>Plex</a>
+  <a href="http://www.seriouslag.com:9001/" target="_blank" rel="nofollow noreferrer noopener" mat-menu-item>QBT</a>
+</mat-menu>

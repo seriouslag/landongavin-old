@@ -3,7 +3,7 @@ import {User} from '../../interfaces/user';
 import {LgService} from '../../services/lg.service';
 import {Subscription} from 'rxjs/Subscription';
 import {FirebaseService} from '../../services/firebase.service';
-import {MdSnackBar} from '@angular/material/snack-bar';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {isUndefined} from 'util';
 
 
@@ -40,7 +40,7 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
   private editSubscription: Subscription;
   private userSubscription: Subscription;
 
-  constructor(private lgService: LgService, private firebaseService: FirebaseService, private snackBar: MdSnackBar) {
+  constructor(private lgService: LgService, private firebaseService: FirebaseService, private snackBar: MatSnackBar) {
     for (const property of this.userProperties) {
       this[property] = '';
     }

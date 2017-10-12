@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MdDialogRef} from '@angular/material';
+import {MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-question-dialog',
@@ -11,7 +11,7 @@ export class QuestionDialogComponent implements OnInit {
   customText: string;
   showButtonText: boolean;
 
-  constructor(private questionDialog: MdDialogRef<QuestionDialogComponent>) { }
+  constructor(private questionDialog: MatDialogRef<QuestionDialogComponent>) { }
 
   ngOnInit() {
   }

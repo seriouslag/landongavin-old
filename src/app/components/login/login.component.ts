@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {MdSnackBar} from '@angular/material/snack-bar';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {FirebaseService} from '../../services/firebase.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {DialogService} from '../../services/dialog.service';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit {
   title = 'Login';
   create = false;
@@ -40,7 +42,7 @@ export class LoginComponent implements OnInit {
     matchingPassword: this.matchingPassword,
   });
 
-  constructor(public snackBar: MdSnackBar, private firebaseService: FirebaseService,
+  constructor(public snackBar: MatSnackBar, private firebaseService: FirebaseService,
               private dialogService: DialogService) { }
 
   ngOnInit(): void {
@@ -70,14 +72,14 @@ export class LoginComponent implements OnInit {
     this.firebaseService.createUserFromEmail(
       this.matchingEmail.controls['email'].value.toLowerCase(), this.matchingPassword.controls['password'].value,
       this.accountForm.controls['firstname'].value, this.accountForm.controls['lastname'].value).then((user) => {
-      if (user) {
-        this.snackBar.open('Created account: ' + this.matchingEmail.controls['email'].value.toLowerCase());
-        this.toLogin();
-        this.action = true;
-      } else {
-        //Snackbar handled by service
-        this.submitted = false;
-      }
+        if (user) {
+          this.snackBar.open('Created account: ' + this.matchingEmail.controls['email'].value.toLowerCase());
+          this.toLogin();
+          this.action = true;
+        } else {
+          //Snackbar handled by service
+          this.submitted = false;
+        }
     });
   }
 

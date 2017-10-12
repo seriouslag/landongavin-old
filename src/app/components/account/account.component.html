@@ -1,17 +1,17 @@
-<md-accordion #account_component>
-  <md-expansion-panel>
-    <md-expansion-panel-header>
-      <md-panel-title>
+<mat-accordion #account_component>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
         <div *ngIf="user" fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="10px" class="account_info">
           <img src="{{user.photoURL}}" *ngIf="user.photoURL"><div *ngIf="user.displayName">{{user.displayName}}</div>
           <div *ngIf="!user.displayName">{{user.email}}</div>
         </div>
-      </md-panel-title>
-    </md-expansion-panel-header>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
     <div fxLayout="column" fxLayoutAlign="start start">
-      <button md-button *ngIf="lgUser?.vanity" routerLink="/about/{{lgUser?.vanity}}">Profile</button>
-      <button md-button *ngIf="lgUser" routerLink="/account">Settings</button>
-      <button md-button (click)="logout()">Logout</button>
+      <a mat-button *ngIf="lgUser?.vanity" routerLink="/about/{{lgUser?.vanity}}">Profile</a>
+      <a mat-button *ngIf="lgUser" routerLink="/account">Settings</a>
+      <button mat-button (click)="logout()">Logout</button>
     </div>
-  </md-expansion-panel>
-</md-accordion>
+  </mat-expansion-panel>
+</mat-accordion>
