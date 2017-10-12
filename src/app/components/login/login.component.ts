@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
   }, this.emailMatchValidator);
 
   matchingPassword: FormGroup = new FormGroup({
-    password: new FormControl(null, [Validators.required, Validators.minLength(8), this.validatePW]),
+    password: new FormControl(null, [Validators.required, Validators.minLength(8), Validators.maxLength(64), this.validatePW]),
     cpassword: new FormControl(null, [Validators.required]),
   }, this.passwordMatchValidator);
 
@@ -75,6 +75,7 @@ export class LoginComponent implements OnInit {
         this.toLogin();
         this.action = true;
       } else {
+        //Snackbar handled by service
         this.submitted = false;
       }
     });
@@ -121,7 +122,13 @@ export class LoginComponent implements OnInit {
   }
 
   private validatePW(fc: FormControl) {
-    const PW_REGEXP = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@!%*?&()])[A-Za-z\d$@!%*?&]{8,}/;
+    // old
+    // const PW_REGEXP = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@!%*?&()])[A-Za-z\d$@!%*?&]{8,}/;
+
+    // new but needs a ton of client side validation and an api backend to check against commonly used passwords
+    // lots of work but security is the name of the game :D
+    const PW_REGEXP = /^.{8,64}$/;
+
 
     return PW_REGEXP.test(fc.value) ? null : {
       'pw': true

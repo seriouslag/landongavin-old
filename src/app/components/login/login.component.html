@@ -46,7 +46,7 @@
 
     <form fxLayout="column" fxLayoutGap="10px" [formGroup]="accountForm" *ngIf="create" novalidate (submit)="createUserLogin()">
       <md-input-container>
-        <input mdInput placeholder="First Name" type="text" formControlName="firstname">
+        <input mdInput placeholder="First Name" type="text" formControlName="firstname" required autocomplete="fname">
         <md-hint
           *ngIf="accountForm.controls['firstname'].hasError('required') && accountForm.controls['firstname'].touched"
           class="errorHints">A first name is required.
@@ -57,7 +57,7 @@
         </md-hint>
       </md-input-container>
       <md-input-container>
-        <input mdInput placeholder="Last Name" type="text" formControlName="lastname">
+        <input mdInput placeholder="Last Name" type="text" formControlName="lastname" required autocomplete="lname">
         <md-hint
           *ngIf="accountForm.controls['lastname'].hasError('required') && accountForm.controls['lastname'].touched"
           class="errorHints">A last name is required.
@@ -69,7 +69,7 @@
       </md-input-container>
       <div fxLayout="column" fxLayoutGap="10px" formGroupName="matchingEmail">
         <md-input-container>
-          <input mdInput placeholder="Email" type="email" formControlName="email">
+          <input mdInput placeholder="Email" type="email" formControlName="email" required autocomplete="email">
           <md-hint
             *ngIf="matchingEmail.controls['email'].hasError('required') && matchingEmail.controls['email'].touched && !matchingEmail.controls['email'].hasError('email')"
             class="errorHints">An email is required.
@@ -80,7 +80,7 @@
         </md-input-container>
 
         <md-input-container>
-          <input mdInput placeholder="Confirm Email" type="email" formControlName="cemail">
+          <input mdInput placeholder="Confirm Email" type="email" formControlName="cemail" required autocomplete="email">
 
           <md-hint
             *ngIf="matchingEmail.controls['cemail'].hasError('required') && matchingEmail.controls['cemail'].touched"
@@ -95,14 +95,22 @@
       </div>
       <div fxLayout="column" fxLayoutGap="10px" formGroupName="matchingPassword">
         <md-input-container>
-          <input mdInput placeholder="Password" type="password" formControlName="password">
+          <input mdInput placeholder="Password" type="password" formControlName="password" required autocomplete="password">
           <md-hint
             *ngIf="matchingPassword.controls['password'].hasError('required') && matchingPassword.controls['password'].touched"
             class="errorHints">A password is required.
           </md-hint>
-          <md-hint
+          <!--<md-hint
             *ngIf="!matchingPassword.controls['password'].hasError('minlength') && !matchingPassword.controls['password'].hasError('required') && matchingPassword.controls['password'].touched && matchingPassword.controls['password'].hasError('pw')"
-            class="errorHints">Must contain at least 1 lowercase, 1 uppercase, 1 number, and 1 symbol of $@!%*?&( or )
+            class="errorHints">Must contain 1 lowercase, 1 uppercase, 1 number, and 1 symbol of $@!%*?&( or )
+          </md-hint>-->
+          <md-hint
+            *ngIf="!matchingPassword.controls['password'].hasError('minlength') && !matchingPassword.controls['password'].hasError('maxlength') && !matchingPassword.controls['password'].hasError('required') && matchingPassword.controls['password'].touched && matchingPassword.controls['password'].hasError('pw')"
+            class="errorHints">This is not a valid password.
+          </md-hint>
+          <md-hint
+            *ngIf="matchingPassword.controls['password'].hasError('maxlength') && matchingPassword.controls['password'].touched && !matchingPassword.controls['password'].hasError('required')"
+            class="errorHints">The password must be at least 8 characters long.
           </md-hint>
           <md-hint
             *ngIf="matchingPassword.controls['password'].hasError('minlength') && matchingPassword.controls['password'].touched && !matchingPassword.controls['password'].hasError('required')"
@@ -111,7 +119,7 @@
         </md-input-container>
 
         <md-input-container>
-          <input mdInput placeholder="Confirm Password" type="password" formControlName="cpassword">
+          <input mdInput placeholder="Confirm Password" type="password" formControlName="cpassword" required autocomplete="password">
           <md-hint
             *ngIf="matchingPassword.controls['cpassword'].hasError('required') && matchingPassword.controls['cpassword'].touched"
             class="errorHints">This field is required.
