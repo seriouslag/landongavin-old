@@ -58,6 +58,7 @@ export class SocialLinkComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private observableMedia: ObservableMedia) {
     this.mediaSubscription = this.observableMedia.subscribe((mediaAlias: MediaChange) => {
       this.mediaAlias = mediaAlias.mqAlias;
+      console.log(this.mediaAlias);
     });
   }
 
@@ -65,6 +66,8 @@ export class SocialLinkComponent implements OnInit, OnDestroy, OnChanges {
     this.setHREF(this.type);
     if (this.observableMedia.isActive('xs')) {
       this.mediaAlias = 'xs';
+    } else if (this.observableMedia.isActive('sm')) {
+      this.mediaAlias = 'sm';
     }
   }
 
