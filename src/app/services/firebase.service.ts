@@ -119,25 +119,28 @@ export class FirebaseService {
       } else if (error.code === 'auth/invalid-email') {
         this.snackBar.open('Email is invalid', 'OK', {duration: 2000});
       } else if (error.code === 'auth/email-already-in-use') {
-
-        this.mergeDialog = this.dialogService.openDialog(MergeComponent, {});
-        this.mergeDialog.componentInstance.email = email;
-        this.mergeDialog.componentInstance.firebaseService = this;
-        this.mergeDialog.afterClosed().subscribe(result => {
-          if (result === 1) {
-            // confirm
-          } else {
-            // cancel
-          }
-          this.snackBar.open('Merging accounts is not supported yet :(', 'OK', {duration: 2200});
-        });
-
+        this.snackBar.open('This email is already in use', 'OK', {duration: 2000});
       } else if (error.code === 'auth/operation-not-allowed') {
         this.snackBar.open('This is not allowed at this time', 'OK', {duration: 2000});
       } else {
         this.snackBar.open('Cannot process, unknown error', 'OK', {duration: 2000});
       }
     });
+  }
+
+  private mergeProviders(email: string) {
+    this.mergeDialog = this.dialogService.openDialog(MergeComponent, {});
+    this.mergeDialog.componentInstance.email = email;
+    this.mergeDialog.componentInstance.firebaseService = this;
+    this.mergeDialog.afterClosed().subscribe(result => {
+      if (result === 1) {
+        // confirm
+      } else {
+        // cancel
+      }
+      this.snackBar.open('Merging accounts is not supported yet :(', 'OK', {duration: 2200});
+    });
+
   }
 
   public fetchProvidersForEmail(email: string): firebase.Promise<string[]> {
