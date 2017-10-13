@@ -37,6 +37,21 @@ export class FirebaseService {
     return this.db.list<Card[]>('/blog').valueChanges();
   }
 
+  public isVerified(): boolean {
+    if (this.auth.auth.currentUser) {
+      console.log('here', this.auth.auth.currentUser.emailVerified);
+      return this.auth.auth.currentUser.emailVerified;
+    } else {
+      return null;
+    }
+  }
+
+  public refreshUser() {
+    if (this.auth.auth.currentUser) {
+      this.auth.auth.currentUser.reload().then(()=> {console.log('refresed' )});
+    }
+  }
+
   public loginWithGoogleProvider(): void {
     this.auth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then((user: firebase.User) => {
       this.db.object('/users/' + user.uid).valueChanges().take(1).subscribe(lgUser => {
@@ -65,7 +80,7 @@ export class FirebaseService {
             facebook: '', instagram: '', twitch: '', youtube: '',
             google: '', uid: tempUser.uid, linkedin: '', resumeLink: '',
             vanity: tempUser.uid.toLowerCase(),
-            dateCreated: tempUser.dateCreated, image: '',
+            dateCreated: tempUser.dateCreated, image: '', isVerified: false
           });
         }
       });
@@ -101,7 +116,7 @@ export class FirebaseService {
     return this.db.object('users/' + lgUser.uid).set(lgUser);
   }
 
-  public createUserFromEmail(email: string, password: string, fname: string, lname: string): Promise<any> {
+  public createUserFromEmail(email: string, password: string, fname: string, lname: string): Promise<User> {
     return this.auth.auth.createUserWithEmailAndPassword(email, password).then((response) => {
 
         this.saveUserToDB(<User>{
@@ -110,10 +125,16 @@ export class FirebaseService {
           facebook: '', instagram: '', twitch: '', youtube: '',
           google: '', uid: response.uid, linkedin: '', resumeLink: '',
           vanity: response.uid.toLowerCase(),
-          dateCreated: Date.now().toString(), image: ''
+          dateCreated: Date.now().toString(), image: '', isVerified: false
+        }).then(() => {
+          this.setUserVanity(response.uid.toLowerCase());
+          this.sendEmailVerification();
+
+        }).catch(() => {
+          this.snackBar.open('Failed to create your account please try again.', 'OK', 3000);
         });
 
-        this.setUserVanity(response.uid.toLowerCase());
+        return response;
 
       }).catch((error: firebase.FirebaseError) => {
       if (error.code === 'auth/weak-password') {
@@ -127,8 +148,17 @@ export class FirebaseService {
       } else {
         this.snackBar.open('Cannot process, unknown error', 'OK', {duration: 2000});
       }
+
     });
   }
+
+  public sendEmailVerification(): void {
+    this.auth.auth.currentUser.sendEmailVerification().then(() => {
+      this.snackBar.open('A verification email has been sent to ' + this.auth.auth.currentUser.email, 'OK', 4000);
+    }). catch(() => {
+      this.snackBar.open('Failed to send a verification email please try again later.', 'OK', 4000);
+    })
+}
 
   private mergeProviders(email: string) {
     this.mergeDialog = this.dialogService.openDialog(MergeComponent, {});
@@ -158,7 +188,17 @@ export class FirebaseService {
   }
 
   public getLGUserByUID(uid: string): Observable<User> {
-    return this.db.object('/users/' + uid).valueChanges();
+    const ret = this.db.object('/users/' + uid).valueChanges();
+    ret.take(1).subscribe((user: User) => {
+      if(user && this.auth.auth.currentUser) {
+        if (user.uid === this.auth.auth.currentUser.uid) {
+          if (user.isVerified !== this.auth.auth.currentUser.emailVerified) {
+            this.updateUserInfo({isVerified: this.auth.auth.currentUser.emailVerified});
+          }
+        }
+      }
+    });
+    return ret;
   }
 
   public getUserProfileImg(uid: string): Promise<string> {
