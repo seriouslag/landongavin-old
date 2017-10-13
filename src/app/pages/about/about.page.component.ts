@@ -29,7 +29,6 @@ export class AboutPageComponent implements OnInit, OnDestroy {
       .subscribe(
         params => {
           this.vanitySubscription = this.firebaseService.getUIDByVanity(params['vanity'].toLowerCase()).subscribe(aboutUID => {
-            console.log(aboutUID);
             this.waiting = false;
             this.aboutUID = aboutUID;
             if (this.aboutUID != null) {
