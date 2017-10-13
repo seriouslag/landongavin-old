@@ -36,7 +36,7 @@ export class AccountPageComponent implements OnInit, OnDestroy {
       twitch: '', youtube: '', facebook: '',
       twitter: '', linkedin: '', instagram: '',
       resumeLink: '', vanity: 'Vanity', dateCreated: '',
-      uid: '', image: ''
+      uid: '', image: '', isVerified: false
     };
   }
 
