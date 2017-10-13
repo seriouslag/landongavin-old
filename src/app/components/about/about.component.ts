@@ -49,12 +49,13 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit() {
     this.editSubscription = this.lgService.editMode.subscribe(edit => {
       this.editMode = edit;
+      console.log('editMode in about', edit);
     });
 
     this.userSubscription = this.firebaseService.user.subscribe(user => {
       this.user = user;
       if (user === null) {
-        this.editMode = false;
+        this.setEditMode(false);
         this.showEditBtn = false;
       } else {
         if (this.aboutUser) {
@@ -75,7 +76,7 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
         this.handleAboutUserChange();
         // check for user being undefined because you could land on this page before firebase does a check
         if (this.user === null || isUndefined(this.user)) {
-          this.editMode = false;
+          this.setEditMode(false);
           this.showEditBtn = false;
         } else {
           if (this.aboutUser) {
@@ -96,6 +97,10 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
+  }
+
+  private setEditMode(editMode: boolean) {
+    this.lgService.editMode.next(editMode);
   }
 
   private hasChanged(): boolean {
@@ -177,7 +182,7 @@ export class AboutComponent implements OnInit, OnDestroy, OnChanges {
 
     }
 
-    this.editMode = !this.editMode;
+    this.setEditMode(!this.editMode);
     if (this.editMode === false) {
       this.editBtnText = 'Edit';
     } else {
