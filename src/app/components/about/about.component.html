@@ -2,8 +2,8 @@
   <mat-card-header  fxLayout="row">
     <app-profile-image mat-card-avatar class="profile_image" [src]="aboutUser.image" [editMode]="editMode" *ngIf="noImg === false"></app-profile-image>
     <mat-card-title>
-      <div>
-        {{aboutUser.fname}} {{aboutUser.lname}}
+      <div fxLayout="row">
+        <span>{{aboutUser.fname}} {{aboutUser.lname}}</span> <div fxFlex></div><app-email-verification [editMode]="editMode" [editUser]="aboutUser"></app-email-verification>
       </div>
     </mat-card-title>
     <div fxFlex></div>
@@ -12,7 +12,7 @@
     </div>
     <mat-card-subtitle>
 
-      <app-text-input #job [editMode]="editMode" [type]="'text'" [text]="aboutUser.job" [placeholder]="'Job'" [maxlength]="20" (value)="job" (notify)="updateUserProperties('job', $event)" (enter)="submit()"></app-text-input>
+      <app-text-input #job [editMode]="editMode" [type]="'text'" [text]="aboutUser.job" [placeholder]="'Occupation'" [maxlength]="20" (value)="job" (notify)="updateUserProperties('job', $event)" (enter)="submit()"></app-text-input>
       <span *ngIf="aboutUser.company"> @ </span>
       <app-text-input #company [editMode]="editMode" [type]="'text'" [text]="aboutUser.company" [placeholder]="'Company'" [maxlength]="20" (value)="company" (notify)="updateUserProperties('company', $event)" (enter)="submit()"></app-text-input>
 
@@ -24,7 +24,7 @@
       <div fxFlex>
         <span *ngIf="editMode === false">Bio:</span>
         <p *ngIf="aboutUser.bio" class="bio">
-          <app-text-input #bio [editMode]="editMode" [type]="'textarea'" [text]="aboutUser.bio" [placeholder]="'Bio'" [maxlength]="200" (value)="bio" (notify)="updateUserProperties('bio', $event)" (enter)="submit()"></app-text-input>
+          <app-text-input #bio [editMode]="editMode" [type]="'textarea'" [text]="aboutUser.bio" [placeholder]="'Bio'" [maxlength]="280" (value)="bio" (notify)="updateUserProperties('bio', $event)" (enter)="submit()"></app-text-input>
         </p>
         <p *ngIf="!aboutUser.bio">
           <app-text-input #bio [editMode]="editMode" [type]="'textarea'" [text]="aboutUser.fname + ' has not entered a bio yet :('" [placeholder]="'Bio'" [maxlength]="200" (value)="bio" (notify)="updateUserProperties('bio', $event)" (enter)="submit()"> </app-text-input>
