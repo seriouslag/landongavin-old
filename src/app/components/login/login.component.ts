@@ -3,6 +3,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {FirebaseService} from '../../services/firebase.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {DialogService} from '../../services/dialog.service';
+import {MatDialogRef} from "@angular/material";
+import {NewuserDialogComponent} from "../dialogs/newuser-dialog/newuser-dialog.component";
 
 @Component({
   selector: 'app-login',
@@ -16,7 +18,7 @@ export class LoginComponent implements OnInit {
   submitted = false;
   action = false;
 
-
+  newuserDialog: MatDialogRef<NewuserDialogComponent>;
 
   public closedLogin: Boolean = false;
 
@@ -43,7 +45,7 @@ export class LoginComponent implements OnInit {
   });
 
   constructor(public snackBar: MatSnackBar, private firebaseService: FirebaseService,
-              private dialogService: DialogService) { }
+              private dialogService: DialogService, private snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
   }
@@ -72,12 +74,19 @@ export class LoginComponent implements OnInit {
     this.firebaseService.createUserFromEmail(
       this.matchingEmail.controls['email'].value.toLowerCase(), this.matchingPassword.controls['password'].value,
       this.accountForm.controls['firstname'].value, this.accountForm.controls['lastname'].value).then((user) => {
-        if (user) {
-          this.snackBar.open('Created account: ' + this.matchingEmail.controls['email'].value.toLowerCase());
+        if (this.firebaseService.user) {
+          this.snackBar.open('Created account: ' + this.matchingEmail.controls['email'].value.toLowerCase(), 'OK', {duration: 2000});
           this.toLogin();
           this.action = true;
+
+          this.newuserDialog = this.dialogService.openDialog(NewuserDialogComponent, {});
+          this.newuserDialog.componentInstance.firebaseService = this.firebaseService;
+          this.newuserDialog.afterClosed().subscribe(result => {
+            this.snackbar.open('This feature has not been fully implemented yet, nothing was saved.', 'OK', 3000);
+          });
+
         } else {
-          //Snackbar handled by service
+          // Snackbar handled by service
           this.submitted = false;
         }
     });
