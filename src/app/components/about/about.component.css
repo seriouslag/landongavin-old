@@ -10,6 +10,14 @@ mat-card-actions {
   margin-bottom: -16px;
 }
 
+/*
+  Doesn't work, it works in global styles but leaving for future fixing
+ */
+.mat-card-header-text {
+  width: 100%;
+}
+
+
 mat-card {
   max-width: 650px;
   min-width: 285px;
