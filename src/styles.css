@@ -13,3 +13,8 @@ html, body {
 a {
   text-decoration: none;
 }
+
+/* not the best solution but only way to have it work :( */
+.mat-card-header-text {
+  width: 100%;
+}
