@@ -16,4 +16,5 @@ export interface User {
   uid: string;
   resumeLink: string;
   dateCreated: string;
+  isVerified: boolean;
 }
