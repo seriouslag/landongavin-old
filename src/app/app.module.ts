@@ -39,6 +39,8 @@ import { QuestionDialogComponent } from './components/dialogs/question-dialog/qu
 import { TextInputComponent } from './components/editable/text-input/text-input.component';
 import { SocialLinkComponent } from './components/editable/social-link/social-link.component';
 import { ProfileImageComponent } from './components/editable/profile-image/profile-image.component';
+import {NewuserDialogComponent} from './components/dialogs/newuser-dialog/newuser-dialog.component';
+import { EmailVerificationComponent } from './components/editable/email-verification/email-verification.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,9 @@ import { ProfileImageComponent } from './components/editable/profile-image/profi
     QuestionDialogComponent,
     TextInputComponent,
     SocialLinkComponent,
-    ProfileImageComponent
+    ProfileImageComponent,
+    NewuserDialogComponent,
+    EmailVerificationComponent
   ],
   imports: [
     BrowserModule,
@@ -79,7 +83,7 @@ import { ProfileImageComponent } from './components/editable/profile-image/profi
   ],
   exports: [FormsModule, ReactiveFormsModule],
   providers: [FirebaseService, DialogService, LgService],
-  entryComponents: [MergeComponent, QuestionDialogComponent],
+  entryComponents: [MergeComponent, QuestionDialogComponent, NewuserDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
