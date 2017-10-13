@@ -4,7 +4,7 @@
   overflow: auto;
 }
 
-md-expansion-panel {
+mat-expansion-panel {
   overflow-y: auto;
   overflow-x: hidden;
   max-height: 90vh;
