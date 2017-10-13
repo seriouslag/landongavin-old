@@ -62,6 +62,7 @@ export class SocialLinkComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit() {
+    this.type = this.type.toLowerCase();
     this.setHREF(this.type);
     if (this.observableMedia.isActive('xs')) {
       this.mediaAlias = 'xs';
@@ -76,6 +77,7 @@ export class SocialLinkComponent implements OnInit, OnDestroy, OnChanges {
       if (propName === 'type') {
         this.setHREF(propName);
       } else if (propName === 'link') {
+        this.type = this.type.toLowerCase();
         this.setHREF(this.type);
       }
     }

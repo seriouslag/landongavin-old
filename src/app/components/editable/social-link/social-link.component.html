@@ -1,4 +1,4 @@
-<a [href]='"https://" + href' *ngIf="editMode !== true && link"><button mat-icon-button><i class="mdi mdi-24px {{styleClass}} icon"></i></button></a>
+<a [href]='"https://" + href' *ngIf="editMode !== true && link"><button mat-icon-button matTooltip="{{type.substring(0,1).toUpperCase() + type.substring(1).toLowerCase()}}"><i class="mdi mdi-24px {{styleClass}} icon"></i></button></a>
 
 <div *ngIf="editMode === true">
 
