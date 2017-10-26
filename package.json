@@ -24,8 +24,8 @@
     "@angular/platform-browser": "^4.4.4",
     "@angular/platform-browser-dynamic": "^4.4.4",
     "@angular/router": "^4.4.4",
-    "angularfire2": "^5.0.0-rc.2",
-    "angulartics2": "^2.4.0",
+    "angularfire2": "^5.0.0-rc.3",
+    "angulartics2": "^3.0.0",
     "classlist.js": "^1.1.20150312",
     "core-js": "^2.4.1",
     "firebase": "^4.5.0",
@@ -37,7 +37,7 @@
     "zone.js": "^0.8.18"
   },
   "devDependencies": {
-    "@angular/cli": "1.4.7",
+    "@angular/cli": "^1.4.9",
     "@angular/compiler-cli": "^4.4.4",
     "@angular/language-service": "^4.4.4",
     "@types/hammerjs": "^2.0.35",
