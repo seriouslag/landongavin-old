@@ -1,13 +1,13 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {User} from "../../../interfaces/user";
-import {FirebaseService} from "../../../services/firebase.service";
+import {Component, Input, OnInit} from '@angular/core';
+import {User} from '../../../interfaces/user';
+import {FirebaseService} from '../../../services/firebase.service';
 
 @Component({
   selector: 'app-email-verification',
   templateUrl: './email-verification.component.html',
   styleUrls: ['./email-verification.component.css']
 })
-export class EmailVerificationComponent implements OnInit, OnDestroy {
+export class EmailVerificationComponent implements OnInit {
 
   @Input()
   editMode: boolean;
@@ -15,16 +15,9 @@ export class EmailVerificationComponent implements OnInit, OnDestroy {
   @Input()
   editUser: User;
 
-  isVerified = false;
-
   constructor(private firebaseService: FirebaseService) { }
 
   ngOnInit() {
-
-  }
-
-  ngOnDestroy(): void {
-
   }
 
   public sendEmailVerification(): void {
