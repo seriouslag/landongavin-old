@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FirebaseService} from '../../services/firebase.service';
 import {Subscription} from 'rxjs/Subscription';
 import {User} from '../../interfaces/user';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-account',
