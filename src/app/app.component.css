@@ -14,11 +14,16 @@ app-root:host {
   position: fixed;
   left: 0;
   top: 0;
-  background: #ffffff url("../assets/images/background.jpg") no-repeat fixed center;
+  /*
+    background: #ffffff url("../assets/images/background.jpg") no-repeat fixed center;
+  */
   background-size: cover;
   min-height: 100vh;
   min-width: 100vw;
+  background: #FAF9F5;
 }
+
+
 
 .header {
   height: 75px;
