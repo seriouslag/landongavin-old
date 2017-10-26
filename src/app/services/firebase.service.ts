@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import {
-  AngularFireDatabase, AngularFireList, AngularFireObject,
+  AngularFireDatabase, AngularFireList,
 } from 'angularfire2/database';
 import {AngularFireAuth} from 'angularfire2/auth';
 
@@ -14,6 +14,7 @@ import {User} from '../interfaces/user';
 import {FirebaseApp} from 'angularfire2';
 import {DialogService} from './dialog.service';
 import {MergeComponent} from '../components/dialogs/merge/merge.component';
+import {environment} from '../../environments/environment';
 
 
 @Injectable()
@@ -28,7 +29,12 @@ export class FirebaseService {
   constructor(@Inject(FirebaseApp) firebaseApp: any, private db: AngularFireDatabase,
               private auth: AngularFireAuth, private snackBar: MatSnackBar, private dialogService: DialogService) {
     this.user = auth.authState;
+
+
+    // Keep user logged in
     auth.auth.setPersistence('local');
+
+
     this.storage = firebaseApp.storage();
     this.storageRef = this.storage.ref();
   }
@@ -39,7 +45,6 @@ export class FirebaseService {
 
   public isVerified(): boolean {
     if (this.auth.auth.currentUser) {
-      console.log('here', this.auth.auth.currentUser.emailVerified);
       return this.auth.auth.currentUser.emailVerified;
     } else {
       return null;
@@ -48,7 +53,11 @@ export class FirebaseService {
 
   public refreshUser() {
     if (this.auth.auth.currentUser) {
-      this.auth.auth.currentUser.reload().then(()=> {console.log('refresed' )});
+      this.auth.auth.currentUser.reload().then(() => {
+        if (environment.production === false) {
+          console.log('refreshed user');
+        }
+      });
     }
   }
 
@@ -62,9 +71,9 @@ export class FirebaseService {
             tempUser.email = user.email;
           }
           if (user.uid) {
-              tempUser.uid = user.uid;
-              tempUser.vanity = user.uid.toLowerCase();
-              this.setUserVanity(user.uid.toLowerCase());
+            tempUser.uid = user.uid.toLowerCase();
+            tempUser.vanity = user.uid.toLowerCase();
+            this.setUserVanity(user.uid.toLowerCase());
           }
           if (user.displayName) {
             if (user.displayName.indexOf(' ') >= 0) {
@@ -79,7 +88,7 @@ export class FirebaseService {
             bio: '', job: '', company: '', twitter: '',
             facebook: '', instagram: '', twitch: '', youtube: '',
             google: '', uid: tempUser.uid, linkedin: '', resumeLink: '',
-            vanity: tempUser.uid.toLowerCase(),
+            vanity: tempUser.uid,
             dateCreated: tempUser.dateCreated, image: '', isVerified: false
           });
         }
@@ -88,7 +97,18 @@ export class FirebaseService {
   }
 
   public loginWithEmailProvider(email: string, password: string): Promise<any> {
-    return this.auth.auth.signInWithEmailAndPassword(email, password).then(() => {
+    return this.auth.auth.signInWithEmailAndPassword(email, password).then((user) => {
+      // Login successful
+      // Handle toast here?
+      if (user.displayName) {
+        this.snackBar.open('Logged in as ' + user.displayName, 'OK', {duration: 1750});
+      } else if (user.email) {
+        this.snackBar.open('Logged in as ' + user.email, 'OK', {duration: 1750});
+      } else {
+        this.snackBar.open('Successfully logged in', 'OK', {duration: 1750});
+      }
+
+
       }).catch((error: any) => {
         const errorCode = error.code;
         this.snackBar.open(error.message, 'OK', {
@@ -106,7 +126,7 @@ export class FirebaseService {
 
   public logout(): void {
     this.auth.auth.signOut().then(() => {
-      this.snackBar.open('Successfully signed out.', 'OK', {duration: 1750});
+      this.snackBar.open('Successfully logged out.', 'OK', {duration: 1750});
     }, () => {
       this.snackBar.open('Something went wrong :(', 'OK', {duration: 1750});
     });
@@ -118,22 +138,24 @@ export class FirebaseService {
 
   public createUserFromEmail(email: string, password: string, fname: string, lname: string): Promise<User> {
     return this.auth.auth.createUserWithEmailAndPassword(email, password).then((response) => {
+        if (response) {
+          this.saveUserToDB(<User>{
+            email: email, fname: fname, lname: lname,
+            bio: '', job: '', company: '', twitter: '',
+            facebook: '', instagram: '', twitch: '', youtube: '',
+            google: '', uid: response.uid, linkedin: '', resumeLink: '',
+            vanity: response.uid.toLowerCase(),
+            dateCreated: Date.now().toString(), image: '', isVerified: false
+          }).then(() => {
+            this.setUserVanity(response.uid.toLowerCase());
+            this.sendEmailVerification();
 
-        this.saveUserToDB(<User>{
-          email: email, fname: fname, lname: lname,
-          bio: '', job: '', company: '', twitter: '',
-          facebook: '', instagram: '', twitch: '', youtube: '',
-          google: '', uid: response.uid, linkedin: '', resumeLink: '',
-          vanity: response.uid.toLowerCase(),
-          dateCreated: Date.now().toString(), image: '', isVerified: false
-        }).then(() => {
-          this.setUserVanity(response.uid.toLowerCase());
-          this.sendEmailVerification();
-
-        }).catch(() => {
-          this.snackBar.open('Failed to create your account please try again.', 'OK', 3000);
-        });
-
+          }).catch(() => {
+            this.snackBar.open('Failed to create your account please try again.', 'OK', 3000);
+          });
+        } else {
+          console.log('The response from creating a user is', null);
+        }
         return response;
 
       }).catch((error: firebase.FirebaseError) => {
@@ -148,8 +170,8 @@ export class FirebaseService {
       } else {
         this.snackBar.open('Cannot process, unknown error', 'OK', {duration: 2000});
       }
-
-    });
+    }
+    );
   }
 
   public sendEmailVerification(): void {
@@ -157,7 +179,7 @@ export class FirebaseService {
       this.snackBar.open('A verification email has been sent to ' + this.auth.auth.currentUser.email, 'OK', 4000);
     }). catch(() => {
       this.snackBar.open('Failed to send a verification email please try again later.', 'OK', 4000);
-    })
+    });
 }
 
   private mergeProviders(email: string) {
@@ -190,7 +212,7 @@ export class FirebaseService {
   public getLGUserByUID(uid: string): Observable<User> {
     const ret = this.db.object('/users/' + uid).valueChanges();
     ret.take(1).subscribe((user: User) => {
-      if(user && this.auth.auth.currentUser) {
+      if (user && this.auth.auth.currentUser) {
         if (user.uid === this.auth.auth.currentUser.uid) {
           if (user.isVerified !== this.auth.auth.currentUser.emailVerified) {
             this.updateUserInfo({isVerified: this.auth.auth.currentUser.emailVerified});
@@ -211,20 +233,25 @@ export class FirebaseService {
   }
 
   public setUserVanity(vanity: string): Promise<any> {
-    vanity = vanity.toLowerCase();
-    const uid = this.auth.auth.currentUser.uid;
-    let lgUser: User;
-    let oldVanity: string;
-    return new Promise(resolve => {
-      const req = this.getLGUserByUID(uid);
-      req.take(1).subscribe(u => {
-        lgUser = u;
-        oldVanity = lgUser.vanity;
-        this.db.object('/vanities').update({[lgUser.vanity]: null});
-        this.db.object('users/' + uid).update({vanity: vanity});
-        return resolve(this.db.object('/vanities').update({[vanity]: lgUser.uid}));
+    if (vanity.length > 0) {
+      vanity = vanity.toLowerCase();
+      const uid = this.auth.auth.currentUser.uid;
+      let lgUser: User;
+      let oldVanity: string;
+      return new Promise(resolve => {
+        const req = this.getLGUserByUID(uid);
+        req.take(1).subscribe(u => {
+          lgUser = u;
+          oldVanity = lgUser.vanity;
+          this.db.object('/vanities').update({[lgUser.vanity]: null});
+          this.db.object('users/' + uid).update({vanity: vanity});
+          return resolve(this.db.object('/vanities').update({[vanity]: lgUser.uid}));
+        });
       });
-    });
+    } else {
+      // add error to promise
+      console.log('Vanity cannot be empty');
+    }
   }
 
   public updateUserInfo(updateObject: any): Promise<any> {
