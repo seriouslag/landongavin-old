@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {FirebaseService} from '../../services/firebase.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {isUndefined} from 'util';
+import * as firebase from 'firebase';
 
 
 @Component({
