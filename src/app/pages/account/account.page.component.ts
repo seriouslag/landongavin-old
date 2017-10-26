@@ -7,6 +7,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {DialogService} from '../../services/dialog.service';
 import {MatDialogRef} from '@angular/material';
 import {QuestionDialogComponent} from '../../components/dialogs/question-dialog/question-dialog.component';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-account-app',
