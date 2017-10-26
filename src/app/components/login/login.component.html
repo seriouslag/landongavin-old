@@ -27,7 +27,7 @@
           </mat-hint>
         </mat-form-field>
         <div fxLayout="row" fxLayoutAlign="space-around center">
-          <button mat-button (click)="loginWithEmail()" [disabled]="loginForm.invalid">
+          <button mat-button [disabled]="loginForm.invalid">
             Login
           </button>
           <button mat-button mat-tooltip="Login with Google" type="button" [matTooltipShowDelay]="500" (click)="loginWithGoogle()">
