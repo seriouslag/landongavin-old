@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SplashPageComponent } from './splash.page.component';
+import {MyMaterialModule} from '../../app.material.module';
 
 describe('SplashPageComponent', () => {
   let component: SplashPageComponent;
@@ -8,6 +9,7 @@ describe('SplashPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [ MyMaterialModule ],
       declarations: [ SplashPageComponent ]
     })
     .compileComponents();

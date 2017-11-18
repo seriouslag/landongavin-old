@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AccountPageComponent } from './account.page.component';
+import {MyMaterialModule} from '../../app.material.module';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
 
 describe('AccountPageComponent', () => {
   let component: AccountPageComponent;
@@ -8,6 +11,7 @@ describe('AccountPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [ MyMaterialModule, FormsModule, ReactiveFormsModule, CommonModule],
       declarations: [ AccountPageComponent ]
     })
     .compileComponents();
