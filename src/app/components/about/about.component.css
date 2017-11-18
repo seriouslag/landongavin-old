@@ -12,10 +12,11 @@ mat-card-actions {
 
 /*
   Doesn't work, it works in global styles but leaving for future fixing
+  .mat-card-header-text {
+    width: 100%;
+  }
+
  */
-.mat-card-header-text {
-  width: 100%;
-}
 
 
 mat-card {

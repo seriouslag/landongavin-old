@@ -1,6 +1,6 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
-import {MyMaterialModule} from '../../app.material';
+import {MyMaterialModule} from '../../app.material.module';
 import {CommonModule} from '@angular/common';
 import {AboutPageComponent} from './about.page.component';
 import {AboutComponent} from '../../components/about/about.component';

@@ -6,42 +6,7 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <div  *ngIf="create !== true">
-      <form [formGroup]="loginForm" novalidate (submit)="loginWithEmail()">
-        <mat-form-field>
-          <input matInput placeholder="Email" type="email" formControlName="email">
-          <mat-hint class="errorHints"
-                   *ngIf="loginForm.controls['email'].touched && loginForm.controls['email'].hasError('email') && !loginForm.controls['email'].hasError('required')">
-            Email is invalid.
-          </mat-hint>
-          <mat-hint class="errorHints"
-                   *ngIf="loginForm.controls['email'].touched  && loginForm.controls['email'].hasError('required')">An
-            email is required to login.
-          </mat-hint>
-        </mat-form-field>
-
-        <mat-form-field>
-          <input matInput placeholder="Password" type="password" formControlName="password">
-          <mat-hint class="errorHints"
-                   *ngIf="loginForm.controls['password'].touched  && loginForm.controls['password'].hasError('required')">
-            Your password is required to login.
-          </mat-hint>
-        </mat-form-field>
-        <div fxLayout="row" fxLayoutAlign="space-around center">
-          <button mat-button [disabled]="loginForm.invalid">
-            Login
-          </button>
-          <button mat-button mat-tooltip="Login with Google" type="button" [matTooltipShowDelay]="500" (click)="loginWithGoogle()">
-              <span fxLayout="row" fxLayoutAlign="center center">
-                <span>Sign In with</span>
-                <span fxFlex="5px"></span>
-                <span class="google icon-wrapper">
-                  <i class="mdi mdi-18px mdi-google"></i>
-                </span>
-              </span>
-          </button>
-
-        </div>
-      </form>
+      <app-login-form></app-login-form>
     </div>
 
     <form fxLayout="column" fxLayoutGap="10px" [formGroup]="accountForm" *ngIf="create" novalidate (submit)="createUserLogin()">

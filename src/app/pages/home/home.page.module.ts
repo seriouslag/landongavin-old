@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
-import {MyMaterialModule} from '../../app.material';
 import {HomePageComponent} from './home.page.component';
 import {BlogComponent} from '../../components/blog/blog.component';
+import {MyMaterialModule} from '../../app.material.module';
 import {CommonModule} from '@angular/common';
 
 @NgModule({

@@ -37,7 +37,7 @@
           <mat-hint
             *ngIf="settingsForm.controls['vanity'].hasError('vanity') && !settingsForm.controls['vanity'].hasError('minlength') && !settingsForm.controls['vanity'].hasError('vanityInUse')
             && !settingsForm.controls['vanity'].hasError('maxlength')" class="errorHints">
-            Vanity must start with a letter and can only contain letters and numbers.
+            Vanity must only contain letters and numbers.
           </mat-hint>
           <mat-hint
             *ngIf="!settingsForm.controls['vanity'].hasError('vanity') && !settingsForm.controls['vanity'].hasError('minlength') && !settingsForm.controls['vanity'].hasError('vanityInUse')

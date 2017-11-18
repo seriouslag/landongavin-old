@@ -25,22 +25,21 @@ export class AboutPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.routerSubscription = this.activatedRoute.params
-      .subscribe(
-        params => {
-          this.vanitySubscription = this.firebaseService.getUIDByVanity(params['vanity'].toLowerCase()).subscribe(aboutUID => {
-            this.waiting = false;
-            this.aboutUID = aboutUID;
-            if (this.aboutUID != null) {
-              this.failed = false;
-              this.getUserByUID(this.aboutUID);
-            } else {
-              this.failed = true;
-              this.aboutUser = null;
-            }
-          });
-        }
-      );
+    this.routerSubscription = this.activatedRoute.params.subscribe(params => {
+      if (params['vanity']) {
+        this.vanitySubscription = this.firebaseService.getUIDByVanity(params['vanity'].toLowerCase()).subscribe(aboutUID => {
+          this.waiting = false;
+          this.aboutUID = aboutUID;
+          if (this.aboutUID != null) {
+            this.failed = false;
+            this.getUserByUID(this.aboutUID);
+          } else {
+            this.failed = true;
+            this.aboutUser = null;
+          }
+        });
+      }
+    });
   }
 
   ngOnDestroy(): void {

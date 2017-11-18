@@ -21,8 +21,9 @@ import {DialogService} from './services/dialog.service';
 import {LgService} from './services/lg.service';
 import { QuestionDialogComponent } from './components/dialogs/question-dialog/question-dialog.component';
 import {NewuserDialogComponent} from './components/dialogs/newuser-dialog/newuser-dialog.component';
-import { MyMaterialModule } from './app.material';
+import { MyMaterialModule } from './app.material.module';
 import {Four04Component} from './pages/four04/four04.component';
+import {LoginFormModule} from './components/forms/login-form/login-form.module';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import {Four04Component} from './pages/four04/four04.component';
     NewuserDialogComponent,
   ],
   imports: [
+    LoginFormModule,
     MyMaterialModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -48,7 +50,7 @@ import {Four04Component} from './pages/four04/four04.component';
     Angulartics2Module.forRoot([ Angulartics2GoogleTagManager ]),
 
   ],
-  exports: [FormsModule, ReactiveFormsModule],
+  exports: [FormsModule, ReactiveFormsModule, LoginFormModule],
   providers: [FirebaseService, DialogService, LgService],
   entryComponents: [MergeComponent, QuestionDialogComponent, NewuserDialogComponent],
   bootstrap: [AppComponent]

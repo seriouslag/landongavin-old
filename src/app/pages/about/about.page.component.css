@@ -6,11 +6,11 @@ a {
   color: black;
 }
 
-md-card-actions {
+mat-card-actions {
   margin-bottom: -16px;
 }
 
-md-card {
+mat-card {
   max-width: 650px;
   min-width: 300px;
 }

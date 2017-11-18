@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
-import {MyMaterialModule} from '../../app.material';
+import {MyMaterialModule} from '../../app.material.module';
 import {CommonModule} from '@angular/common';
 import {AccountPageComponent} from './account.page.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';

@@ -151,7 +151,7 @@ export class FirebaseService {
             this.sendEmailVerification();
 
           }).catch(() => {
-            this.snackBar.open('Failed to create your account please try again.', 'OK', 3000);
+            this.snackBar.open('Failed to create your account please try again.', 'OK', {duration: 3000});
           });
         } else {
           console.log('The response from creating a user is', null);
@@ -176,9 +176,9 @@ export class FirebaseService {
 
   public sendEmailVerification(): void {
     this.auth.auth.currentUser.sendEmailVerification().then(() => {
-      this.snackBar.open('A verification email has been sent to ' + this.auth.auth.currentUser.email, 'OK', 4000);
+      this.snackBar.open('A verification email has been sent to ' + this.auth.auth.currentUser.email, 'OK', {duration: 4000});
     }). catch(() => {
-      this.snackBar.open('Failed to send a verification email please try again later.', 'OK', 4000);
+      this.snackBar.open('Failed to send a verification email please try again later.', 'OK', {duration: 4000});
     });
 }
 
@@ -210,7 +210,7 @@ export class FirebaseService {
   }
 
   public getLGUserByUID(uid: string): Observable<User> {
-    const ret = this.db.object('/users/' + uid).valueChanges();
+    const ret = this.db.object('/users/' + uid).valueChanges() as Observable<User>;
     ret.take(1).subscribe((user: User) => {
       if (user && this.auth.auth.currentUser) {
         if (user.uid === this.auth.auth.currentUser.uid) {

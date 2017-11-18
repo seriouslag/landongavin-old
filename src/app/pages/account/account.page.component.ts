@@ -27,7 +27,7 @@ export class AccountPageComponent implements OnInit, OnDestroy {
   settingsForm: FormGroup = new FormGroup({
     firstname: new FormControl(null, [Validators.minLength(2)]),
     lastname: new FormControl(null, [Validators.minLength(2)]),
-    vanity: new FormControl(null, [Validators.minLength(3), Validators.maxLength(30), this.validateVanity],  [ this.vanityMatchValidator.bind(this)])
+    vanity: new FormControl(null, [Validators.minLength(3), Validators.maxLength(30), AccountPageComponent.validateVanity],  [ this.vanityMatchValidator.bind(this)])
   });
 
   constructor(private firebaseService: FirebaseService, private dialogService: DialogService, private snackBar: MatSnackBar) {
@@ -38,6 +38,14 @@ export class AccountPageComponent implements OnInit, OnDestroy {
       twitter: '', linkedin: '', instagram: '',
       resumeLink: '', vanity: 'Vanity', dateCreated: '',
       uid: '', image: '', isVerified: false
+    };
+  }
+
+  static validateVanity(fc: FormControl) {
+    const VANITY_REGEXP = /^[a-zA-Z0-9]{2,29}$/;
+
+    return VANITY_REGEXP.test(fc.value) ? null : {
+      'vanity': true
     };
   }
 
@@ -64,14 +72,6 @@ export class AccountPageComponent implements OnInit, OnDestroy {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
-  }
-
-  private validateVanity(fc: FormControl) {
-    const VANITY_REGEXP = /^[a-zA-Z][a-zA-Z0-9]{2,29}$/;
-
-    return VANITY_REGEXP.test(fc.value) ? null : {
-      'vanity': true
-    };
   }
 
   private vanityMatchValidator(control: AbstractControl): Promise<any> {

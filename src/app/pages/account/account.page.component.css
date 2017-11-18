@@ -1,8 +1,8 @@
-md-card {
+mat-card {
   max-width: 600px;
 }
 
-md-card-actions {
+mat-card-actions {
   margin-bottom: -16px;
 }
 
