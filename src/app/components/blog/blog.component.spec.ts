@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BlogComponent } from './blog.component';
+import {MyMaterialModule} from '../../app.material.module';
+import {CommonModule} from '@angular/common';
+import {FirebaseService} from '../../services/firebase.service';
+import {RouterModule} from '@angular/router';
 
 describe('BlogComponent', () => {
   let component: BlogComponent;
@@ -8,7 +12,9 @@ describe('BlogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BlogComponent ]
+      imports: [MyMaterialModule, CommonModule, RouterModule],
+      declarations: [ BlogComponent ],
+      providers: [FirebaseService]
     })
     .compileComponents();
   }));
