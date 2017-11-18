@@ -36,12 +36,34 @@ export class BlogComponent implements OnInit, OnDestroy {
     });
   }
 
+  static sortBlogArrayByIdAsc(blogs: Blog[]): Blog[] {
+    return blogs.sort((a, b) => {
+      if (a.id > b.id) {
+        return 1;
+      }
+      if (a.id < b.id) {
+        return -1;
+      }
+    });
+  }
+
+  static sortBlogArrayByIdDesc(blogs: Blog[]): Blog[] {
+    return blogs.sort((a, b) => {
+      if (a.id < b.id) {
+        return 1;
+      }
+      if (a.id > b.id) {
+        return -1;
+      }
+    });
+  }
+
   ngOnInit() {
     // call this here because the subscription to ObservableMedia does fire on load sometimes????
     this.setContentSize();
 
     this.blogSubscription = this.firebaseService.getBlogPostsFromFB().subscribe(blogList => {
-      this.blogList = this.sortBlogArrayByIdDesc(this.parseCardArrayToBlogArray(blogList));
+      this.blogList = BlogComponent.sortBlogArrayByIdDesc(this.parseCardArrayToBlogArray(blogList));
       this.waiting = false;
       this.failed = false;
     }, err => {
@@ -68,28 +90,6 @@ export class BlogComponent implements OnInit, OnDestroy {
     if (this.mediaSubscription) {
       this.mediaSubscription.unsubscribe();
     }
-  }
-
-  private sortBlogArrayByIdAsc(blogs: Blog[]): Blog[] {
-    return blogs.sort((a, b) => {
-      if (a.id > b.id) {
-        return 1;
-      }
-      if (a.id < b.id) {
-        return -1;
-      }
-    });
-  }
-
-  private sortBlogArrayByIdDesc(blogs: Blog[]): Blog[] {
-    return blogs.sort((a, b) => {
-      if (a.id < b.id) {
-        return 1;
-      }
-      if (a.id > b.id) {
-        return -1;
-      }
-    });
   }
 
   private parseCardArrayToBlogArray(cards: Card[]): Blog[] {
