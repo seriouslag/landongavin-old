@@ -40,7 +40,7 @@ export class FirebaseService {
   }
 
   public getBlogPostsFromFB(): Observable<Card[]> {
-    return this.db.list<Card[]>('/blog').valueChanges();
+    return this.db.list<Card>('/blog').valueChanges();
   }
 
   public isVerified(): boolean {
