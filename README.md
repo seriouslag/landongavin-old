@@ -1,4 +1,8 @@
 
+# Deprecated
+[New repo](https://github.com/seriouslag/landongavin)
+
+
 
 # Landongavin
 
